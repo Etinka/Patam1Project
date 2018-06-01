@@ -1,6 +1,8 @@
 package solver;
 
-public class MySolution implements Solution {
+import java.io.Serializable;
+
+public class MySolution implements Solution, Serializable {
     private char[][] level;
     private int colNum;
     private int colRow;
