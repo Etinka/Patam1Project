@@ -21,7 +21,6 @@ public class ClientDemo {
         while (!(line = inFromUser.readLine()).equals("done")) {
             outToServer.println(line);//Don't forget to use line break.
             outToServer.flush();
-            System.out.println(inFromServer.readLine());
         }
         outToServer.println("done");
         outToServer.flush();

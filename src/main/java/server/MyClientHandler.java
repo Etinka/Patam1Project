@@ -13,11 +13,13 @@ public class MyClientHandler implements ClientHandler {
         BufferedReader inFClient = new BufferedReader(new InputStreamReader(inFromClient));
         try {
             String line;
+            StringBuilder builder = new StringBuilder();
             while (!(line = inFClient.readLine()).equals("done")) {
-                String reverse = new StringBuilder(line).reverse().toString();
-                outTC.println(reverse);
-                outTC.flush();
+                builder.append(line);
+                builder.append("\n");
             }
+            System.out.println(builder.toString());
+            System.out.println("done");
             inFClient.close();
             outTC.close();
         } catch (IOException e) {
