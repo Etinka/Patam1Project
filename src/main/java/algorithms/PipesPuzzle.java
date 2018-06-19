@@ -151,6 +151,7 @@ public class PipesPuzzle implements Searchable<String> {
             newState.setCharAt(i, getNextChar(newState.charAt(i)));
             possibleStates.add(new State<>(newState.toString()));
         }
+        System.out.println("getAllPossibleStates");
         return possibleStates;
     }
 

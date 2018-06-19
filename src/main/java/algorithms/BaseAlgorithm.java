@@ -1,6 +1,6 @@
 package algorithms;
 
-abstract class BaseAlgorithm<T> implements Searcher<T>{
+abstract class BaseAlgorithm<T extends Comparable<T>> implements Searcher<T> {
     private long startTime;
     private long endTime;
 
@@ -14,6 +14,8 @@ abstract class BaseAlgorithm<T> implements Searcher<T>{
 
     void endSearch() {
         endTime = System.currentTimeMillis();
+        System.out.println("startTime: " + startTime);
+        System.out.println("endTime: " + endTime);
         System.out.println("Total time: " + getTotalTime());
     }
 

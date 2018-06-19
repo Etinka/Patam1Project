@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-public class BestFirstSearch<T> extends BaseAlgorithm<T> {
+public class BestFirstSearch<T extends Comparable<T>> extends BaseAlgorithm<T> {
 
     @Override
     public Solution<T> search(Searchable<T> s) {
@@ -23,6 +23,7 @@ public class BestFirstSearch<T> extends BaseAlgorithm<T> {
             closedSet.add(n);
 
             if (s.isGoal(n)) {
+                System.out.println("s.isGoal(n)");
                 return backtraceSolution(n);
             }
             ArrayList<State<T>> successors = s.getAllPossibleStates(n);
@@ -37,7 +38,7 @@ public class BestFirstSearch<T> extends BaseAlgorithm<T> {
         }
 
         endSearch();
-        return null;//TODO change
+        return new MySolution<>(new ArrayList<>());//TODO change
     }
 
     Solution<T> backtraceSolution(State<T> state) {

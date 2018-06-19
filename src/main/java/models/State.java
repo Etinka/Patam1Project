@@ -1,7 +1,7 @@
 package models;
 
 
-public class State<T> {
+public class State<T extends Comparable<T>> implements Comparable<State<T>> {
     private T state;
     private State<T> cameFrom;
 
@@ -22,5 +22,8 @@ public class State<T> {
     }
 
 
-
+    @Override
+    public int compareTo(State<T> o) {
+        return state.compareTo(o.state);
+    }
 }
