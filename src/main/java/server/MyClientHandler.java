@@ -2,13 +2,11 @@ package server;
 
 import cache.CacheManager;
 import cache.MyCacheManager;
-import solver.MySolution;
 import solver.MySolver;
 import solver.Solution;
 import solver.Solver;
 
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * has the responsibility of closing the streams
@@ -34,25 +32,25 @@ public class MyClientHandler implements ClientHandler {
                 numCol = line.length();
             }
             //Converting to Solution
-            Solution<String> level = new MySolution<>(builder.toString(), new ArrayList<>());
-            System.out.println("Printing Level:");
-            level.printFinalBoard();
-            System.out.println();
-
+//            Solution<String> level = new MySolution<S>(builder.toString(), new ArrayList<>());
+//            System.out.println("Printing Level:");
+//            level.printFinalBoard();
+//            System.out.println();
+            String level = builder.toString();
             //Getting solution from the cache manager
-            Solution solution = cacheManager.load(level.getFinalBoard());
+            Solution solution = cacheManager.load(level);
             if (solution == null) {
                 //solver
-                solution = solver.solve(level.getFinalBoard());
-                cacheManager.store(level.getFinalBoard(), solution);
+                solution = solver.solve(level, numRows, numCol);
+                cacheManager.store(level, solution);
             }
-            System.out.println("Printing Solution:");
-            solution.printFinalBoard();
+//            System.out.println("Printing Solution:");
+//            solution.printFinalBoard();
             System.out.println("Printing Solution steps:");
             solution.printSteps();
 
             //sending to user
-            outTC.println(solution.getFinalBoard());
+//            outTC.println(solution.getFinalBoard());
             outTC.flush();
 
             System.out.println("done");

@@ -1,5 +1,5 @@
 package solver;
 
 public interface Solver {
-    Solution solve(String level);//todo change to the proper object type
+    Solution solve(String level, int rows, int cols);
 }

@@ -48,7 +48,8 @@ public class BestFirstSearch<T> extends BaseAlgorithm<T> {
             n = n.getCameFrom();
         }
 
-        return new MySolution<>(null, list);//TODO replace null
+        return new MySolution(list);
+        //TODO replace null
     }
 
 

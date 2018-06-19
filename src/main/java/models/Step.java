@@ -1,11 +1,11 @@
 package models;
 
-public class PipeState {
+public class Step {
     private int colNum;
     private int rowNum;
     private int clicksNum;
 
-    public PipeState(int colNum, int rowNum, int clicksNum) {
+    public Step(int colNum, int rowNum, int clicksNum) {
         this.colNum = colNum;
         this.rowNum = rowNum;
         this.clicksNum = clicksNum;
