@@ -1,11 +1,11 @@
-package solver;
+package models;
 
-public class Step {
+public class PipeState {
     private int colNum;
     private int rowNum;
     private int clicksNum;
 
-    public Step(int colNum, int rowNum, int clicksNum) {
+    public PipeState(int colNum, int rowNum, int clicksNum) {
         this.colNum = colNum;
         this.rowNum = rowNum;
         this.clicksNum = clicksNum;

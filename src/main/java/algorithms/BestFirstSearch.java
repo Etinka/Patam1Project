@@ -1,5 +1,6 @@
 package algorithms;
 
+import models.State;
 import solver.MySolution;
 import solver.Solution;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-public class BestFirstSearch<T> extends BaseAlgorithm implements Searcher<T> {
+public class BestFirstSearch<T> extends BaseAlgorithm<T> {
 
     @Override
     public Solution<T> search(Searchable<T> s) {
@@ -23,7 +24,6 @@ public class BestFirstSearch<T> extends BaseAlgorithm implements Searcher<T> {
 
             if (s.isGoal(n)) {
                 return backtraceSolution(n);
-                //TODO return backtrace of solutions
             }
             ArrayList<State<T>> successors = s.getAllPossibleStates(n);
             for (State<T> state : successors) {

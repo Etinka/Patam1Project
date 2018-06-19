@@ -1,8 +1,6 @@
 package algorithms;
 
-import solver.Solution;
-
-class BaseAlgorithm<T> {
+abstract class BaseAlgorithm<T> implements Searcher<T>{
     private long startTime;
     private long endTime;
 

@@ -1,7 +1,8 @@
 package algorithms;
 
+import models.State;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public interface Searchable <T> {
     State<T> getInitialState();

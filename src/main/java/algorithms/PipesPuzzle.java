@@ -1,7 +1,8 @@
 package algorithms;
 
+import models.State;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class PipesPuzzle implements Searchable<String> {
     private State<String> initialState;
