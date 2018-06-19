@@ -34,7 +34,7 @@ public class MyClientHandler implements ClientHandler {
             //Converting to Solution
             Solution level = new MySolution(builder.toString(), numRows, numCol);
             System.out.println("Printing Level:");
-            level.print();
+            level.printFinalBoard();
             System.out.println("done");
 
             //Getting solution from the cache manager
@@ -45,7 +45,9 @@ public class MyClientHandler implements ClientHandler {
                 cacheManager.store(level.getLevelString(), solution);
             }
             System.out.println("Printing Solution:");
-            solution.print();
+            solution.printFinalBoard();
+            System.out.println("Printing Solution steps:");
+            solution.printSteps();
 
             //sending to user
             outTC.println(solution.getLevelString());

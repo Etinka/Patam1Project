@@ -1,23 +1,26 @@
 package solver;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySolution implements Solution, Serializable {
-    private char[][] level;
-    private int colNum;
-    private int colRow;
+    private char[][] finalSolution;
     private String levelString;
+    private int numOfCols;
+    private int numOfRows;
+    private List<Step> steps = new ArrayList<>();
 
-    public MySolution(String levelString, int colRow, int colNum) {
+    public MySolution(String levelString, int numOfRows, int numOfCols) {
         //Move to solution
         this.levelString = levelString;
-        level = new char[colRow][colNum];
-        for (int i = 0; i < colRow; i++) {
-            level[i] = new char[colNum];
-            level[i] = levelString.substring(i * colNum, (i * colNum) + colNum).toCharArray();
+        finalSolution = new char[numOfRows][numOfCols];
+        for (int i = 0; i < numOfRows; i++) {
+            finalSolution[i] = new char[numOfCols];
+            finalSolution[i] = levelString.substring(i * numOfCols, (i * numOfCols) + numOfCols).toCharArray();
         }
-        this.colNum = colNum;
-        this.colRow = colRow;
+        this.numOfCols = numOfCols;
+        this.numOfRows = numOfRows;
     }
 
     public MySolution() {
@@ -30,12 +33,21 @@ public class MySolution implements Solution, Serializable {
     }
 
     @Override
-    public void print() {
-        for (int i = 0; i < colRow; i++) {
-            for (int j = 0; j < colNum; j++) {
-                System.out.print(level[i][j]);
+    public void printFinalBoard() {
+        for (int i = 0; i < numOfRows; i++) {
+            for (int j = 0; j < numOfCols; j++) {
+                System.out.print(finalSolution[i][j]);
             }
-            System.out.println();
         }
     }
+
+    @Override
+    public void printSteps() {
+        for (Step step : steps) {
+            System.out.println(step.toString());
+        }
+        System.out.println();
+    }
+
+
 }

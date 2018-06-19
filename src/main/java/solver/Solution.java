@@ -2,5 +2,6 @@ package solver;
 
 public interface Solution {
     String getLevelString();
-    void print();
+    void printFinalBoard();
+    void printSteps();
 }

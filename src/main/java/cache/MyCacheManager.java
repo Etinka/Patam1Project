@@ -47,11 +47,14 @@ public class MyCacheManager implements CacheManager {
 
     private void loadLocalCacheFromFile() {
         try {
-            FileInputStream fos = new FileInputStream(fileName);
-            ObjectInputStream inputStream = new ObjectInputStream(fos);
-            localCache = (HashMap<String, Solution>) inputStream.readObject();
-            fos.close();
-            inputStream.close();
+            File f = new File(fileName);
+            if (f.isFile() && f.canRead()) {
+                FileInputStream fos = new FileInputStream(fileName);
+                ObjectInputStream inputStream = new ObjectInputStream(fos);
+                localCache = (HashMap<String, Solution>) inputStream.readObject();
+                fos.close();
+                inputStream.close();
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
