@@ -1,52 +1,38 @@
 package solver;
 
+import algorithms.State;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySolution implements Solution, Serializable {
-    private char[][] finalSolution;
-    private String levelString;
-    private int numOfCols;
-    private int numOfRows;
-    private List<Step> steps = new ArrayList<>();
+public class MySolution<T> implements Solution<T>, Serializable {
+    private T finalBoard;
+    private List<State<T>> steps;
 
-    public MySolution(String levelString, int numOfRows, int numOfCols) {
+
+    public MySolution(T finalBoard, ArrayList<State<T>> steps) {
         //Move to solution
-        this.levelString = levelString;
-        finalSolution = new char[numOfRows][numOfCols];
-        for (int i = 0; i < numOfRows; i++) {
-            finalSolution[i] = new char[numOfCols];
-            finalSolution[i] = levelString.substring(i * numOfCols, (i * numOfCols) + numOfCols).toCharArray();
-        }
-        this.numOfCols = numOfCols;
-        this.numOfRows = numOfRows;
-    }
-
-    public MySolution() {
-        this("", 0, 0);
+        this.finalBoard = finalBoard;
+        this.steps = steps;
     }
 
     @Override
-    public String getLevelString() {
-        return levelString;
+    public T getFinalBoard() {
+        return finalBoard;
     }
 
     @Override
     public void printFinalBoard() {
-        for (int i = 0; i < numOfRows; i++) {
-            for (int j = 0; j < numOfCols; j++) {
-                System.out.print(finalSolution[i][j]);
-            }
-        }
+        System.out.println(finalBoard);
     }
 
     @Override
     public void printSteps() {
-        for (Step step : steps) {
-            System.out.println(step.toString());
+        for (State<T> step : steps) {
+            System.out.println(step.getState());
+            System.out.println();
         }
-        System.out.println();
     }
 
 

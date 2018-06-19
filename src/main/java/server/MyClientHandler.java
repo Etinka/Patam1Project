@@ -8,6 +8,7 @@ import solver.Solution;
 import solver.Solver;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * has the responsibility of closing the streams
@@ -28,21 +29,22 @@ public class MyClientHandler implements ClientHandler {
             StringBuilder builder = new StringBuilder();
             while (!(line = inFClient.readLine()).equals("done")) {
                 builder.append(line);
+                builder.append("\n");
                 numRows++;
                 numCol = line.length();
             }
             //Converting to Solution
-            Solution level = new MySolution(builder.toString(), numRows, numCol);
+            Solution<String> level = new MySolution<>(builder.toString(), new ArrayList<>());
             System.out.println("Printing Level:");
             level.printFinalBoard();
-            System.out.println("done");
+            System.out.println();
 
             //Getting solution from the cache manager
-            Solution solution = cacheManager.load(level.getLevelString());
+            Solution solution = cacheManager.load(level.getFinalBoard());
             if (solution == null) {
                 //solver
-                solution = solver.solve(level.getLevelString());
-                cacheManager.store(level.getLevelString(), solution);
+                solution = solver.solve(level.getFinalBoard());
+                cacheManager.store(level.getFinalBoard(), solution);
             }
             System.out.println("Printing Solution:");
             solution.printFinalBoard();
@@ -50,7 +52,7 @@ public class MyClientHandler implements ClientHandler {
             solution.printSteps();
 
             //sending to user
-            outTC.println(solution.getLevelString());
+            outTC.println(solution.getFinalBoard());
             outTC.flush();
 
             System.out.println("done");

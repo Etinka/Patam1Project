@@ -1,7 +1,7 @@
 package solver;
 
-public interface Solution {
-    String getLevelString();
+public interface Solution<T> {
+    T getFinalBoard();
     void printFinalBoard();
     void printSteps();
 }
