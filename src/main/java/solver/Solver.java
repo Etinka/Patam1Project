@@ -1,5 +1,5 @@
 package solver;
 
 public interface Solver {
-    Solution solve(String level, int rows, int cols);
+    Solution solve(char[][] level, int rows, int cols);
 }

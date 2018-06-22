@@ -1,31 +1,32 @@
 package algorithms;
 
+import models.PuzzleState;
 import models.State;
 
 import java.util.ArrayList;
 
-public class PipesPuzzle implements Searchable<String> {
-    private State<String> initialState;
+public class PipesPuzzle implements Searchable<char[][]> {
+    private PuzzleState initialState;
     private int colNum;
     private int rowNum;
 
-    public PipesPuzzle(State<String> initialState, int colNum, int rowNum) {
+    public PipesPuzzle(PuzzleState initialState, int colNum, int rowNum) {
         this.initialState = initialState;
         this.colNum = colNum;
         this.rowNum = rowNum;
     }
 
     @Override
-    public State<String> getInitialState() {
+    public State<char[][]> getInitialState() {
         return initialState;
     }
 
 
     @Override
-    public boolean isGoal(State<String> state) {
+    public boolean isGoal(State<char[][]> state) {
         //Recursion
         boolean result = false;
-        char[][] level = convertStringToChar(state.getState());
+        char[][] level = state.getState();//convertStringToChar(state.getState());
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum; j++) {
                 if (level[i][j] == 's') {
@@ -143,14 +144,30 @@ public class PipesPuzzle implements Searchable<String> {
     }
 
     @Override
-    public ArrayList<State<String>> getAllPossibleStates(State<String> s) {
-        ArrayList<State<String>> possibleStates = new ArrayList<>();
+    public ArrayList<State<char[][]>> getAllPossibleStates(State<char[][]> s) {
+        ArrayList<State<char[][]>> possibleStates = new ArrayList<>();
 
-        for (int i = 1; i < initialState.getState().length() - 1; i++) {
+        for (int i = 0; i < rowNum; i++) {
+            for (int j = 0; j < colNum; j++) {
+                if (s.getState()[i][j] != 's' && s.getState()[i][j] != 'g') {
+                    char[][] newState = new char[rowNum][];
+
+                    for (int l = 0; l < rowNum; l++) {
+                        newState[l] = s.getState()[l].clone();
+                    }
+
+                    newState[i][j] = getNextChar(newState[i][j]);
+                    possibleStates.add(new PuzzleState(newState, rowNum));
+                }
+            }
+        }
+
+
+        /*for (int i = 1; i < initialState.getState().length() - 1; i++) {
             StringBuilder newState = new StringBuilder(s.getState());
             newState.setCharAt(i, getNextChar(newState.charAt(i)));
-            possibleStates.add(new State<>(newState.toString()));
-        }
+            possibleStates.add(new PuzzleState<>(newState.toString()));
+        }*/
         System.out.println("getAllPossibleStates");
         return possibleStates;
     }

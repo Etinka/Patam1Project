@@ -7,7 +7,7 @@ import solver.Solution;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-abstract class CommonSearcher<T extends Comparable<T>> implements Searcher<T> {
+abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
     PriorityQueue<State<T>> openList = new PriorityQueue<>();
 
     private int evaluatedNodes = 0;
@@ -19,7 +19,7 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher<T> {
     }
 
     @Override
-    public Solution search(Searchable<T> s) {
+    public Solution search(Searchable s) {
         long startTime = System.currentTimeMillis();
         System.out.println("searchAlgorithm started");
 
@@ -54,9 +54,9 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher<T> {
     }
 
 
-//    public Solution backTrace(State goalState) {
+//    public Solution backTrace(PuzzleState goalState) {
 //        Solution solution = new Solution();
-//        State currentState = goalState;
+//        PuzzleState currentState = goalState;
 //        while (currentState.getCameFrom() != null) {
 //            // add step
 //            Point posClicked = currentState.getPosClicked();

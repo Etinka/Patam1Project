@@ -14,17 +14,15 @@ public class AlgoSolution<T extends Comparable<T>> implements Solution, Serializ
         this.steps = steps;
     }
 
+    @Override
+    public ArrayList<State<T>> getSteps() {
+        return steps;
+    }
 
     @Override
     public void reverse() {
         Collections.reverse(steps);
     }
 
-    @Override
-    public void printSteps() {
-        for (State<T> step : steps) {
-            System.out.println(step.getState());
-            System.out.println();
-        }
-    }
+
 }

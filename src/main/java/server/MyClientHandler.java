@@ -2,11 +2,13 @@ package server;
 
 import cache.CacheManager;
 import cache.FileCacheManager;
+import models.State;
 import solver.MySolver;
 import solver.Solution;
 import solver.Solver;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * has the responsibility of closing the streams
@@ -41,14 +43,19 @@ public class MyClientHandler implements ClientHandler {
             Solution solution = cacheManager.load(level);
             if (solution == null) {
                 //solver
-                solution = solver.solve(level, numRows, numCol);
+                solution = solver.solve(convertStringToChar(level, numRows, numCol), numRows, numCol);
                 cacheManager.store(level, solution);
             }
 //            System.out.println("Printing Solution:");
 //            solution.printFinalBoard();
             System.out.println("Printing Solution steps: ");
-            solution.printSteps();
-
+            ArrayList<State> states = solution.getSteps();
+            for (State state : states
+                    ) {
+                if (state.getStep() != null) {
+                    System.out.println(state.getStep());
+                }
+            }
             //sending to user
 //            outTC.println(solution.getFinalBoard());
             outTC.flush();
@@ -60,5 +67,14 @@ public class MyClientHandler implements ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private char[][] convertStringToChar(String levelString, int rowNum, int colNum) {
+        char[][] level = new char[rowNum][colNum];
+        for (int i = 0; i < rowNum; i++) {
+            level[i] = new char[colNum];
+            level[i] = levelString.substring(i * colNum, (i * colNum) + colNum).toCharArray();
+        }
+        return level;
     }
 }

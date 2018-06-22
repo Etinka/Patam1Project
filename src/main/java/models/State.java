@@ -1,42 +1,19 @@
 package models;
 
-
 import java.io.Serializable;
 
-public class State<T extends Comparable<T>> implements Comparable<State<T>>, Serializable {
-    private T state;
-    private State<T> cameFrom;
-    private double cost;
+public interface State<T> extends Comparable<State<T>>, Serializable {
+    T getState();
 
-    public State(T state) {
-        this.state = state;
-    }
+    void setCameFrom(State<T> n);
 
-    public T getState() {
-        return state;
-    }
+    State<T> getCameFrom();
 
-    public State<T> getCameFrom() {
-        return cameFrom;
-    }
+    Step getStep();
 
-    public void setCameFrom(State<T> n) {
-        cameFrom = n;
-    }
+    double getCost();
 
+    void setCost(double cost);
 
-    @Override
-    public int compareTo(State<T> o) {
-        return state.compareTo(o.state);
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-
+    void printState();
 }

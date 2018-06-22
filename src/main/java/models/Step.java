@@ -5,7 +5,7 @@ public class Step {
     private int rowNum;
     private int clicksNum;
 
-    public Step(int colNum, int rowNum, int clicksNum) {
+    public Step(int rowNum, int colNum, int clicksNum) {
         this.colNum = colNum;
         this.rowNum = rowNum;
         this.clicksNum = clicksNum;

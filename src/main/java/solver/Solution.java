@@ -4,7 +4,7 @@ import models.State;
 
 import java.util.ArrayList;
 
-public interface Solution {
-    void printSteps();
+public interface Solution<T> {
+    ArrayList<State<T>> getSteps();
     void reverse();
 }
