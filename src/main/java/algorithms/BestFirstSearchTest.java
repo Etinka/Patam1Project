@@ -35,14 +35,39 @@ public class BestFirstSearchTest {
                 numRows), numRows, numCols);
         Solution solution = new BestFirstSearch<String>().search(pipesPuzzle);
         ArrayList<State> states = solution.getSteps();
-        for (State state : states
+        addingCounters(solution);
+       /* for (State state : states
                 ) {
             if (state.getStep() != null) {
                 System.out.println(state.getStep());
             }
-        }
+        }*/
         assertEquals(3, solution.getSteps().size());
     }
+
+    private void addingCounters(Solution solution) {
+        int[][] counters = new int[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                counters[i][j] = 0;
+            }
+        }
+
+        ArrayList<State> states = solution.getSteps();
+        for (State state : states) {
+            if (state.getStep() != null) {
+                counters[state.getStep().getRowNum()][state.getStep().getColNum()]++;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(counters[i][j]%3 + "_");
+            }
+            System.out.println();
+        }
+    }
+
 
     @Test
     public void testEquals() {

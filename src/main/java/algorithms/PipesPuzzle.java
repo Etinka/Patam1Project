@@ -151,7 +151,7 @@ public class PipesPuzzle implements Searchable<char[][]> {
 
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum; j++) {
-//                if (s.getState()[i][j] != 's' && s.getState()[i][j] != 'g') {
+//     TODO check we added           if (s.getState()[i][j] != 's' && s.getState()[i][j] != 'g') {
                     char[][] newState = new char[rowNum][];
 
                     for (int l = 0; l < rowNum; l++) {

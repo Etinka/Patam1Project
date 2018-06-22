@@ -50,6 +50,7 @@ public class MyClientHandler implements ClientHandler {
 //            solution.printFinalBoard();
             System.out.println("Printing Solution steps: ");
             ArrayList<State> states = solution.getSteps();
+
             for (State state : states
                     ) {
                 if (state.getStep() != null) {
