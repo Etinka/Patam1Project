@@ -5,11 +5,11 @@ import solver.Solution;
 import java.io.*;
 import java.util.HashMap;
 
-public class MyCacheManager implements CacheManager {
-    final String fileName = "Solution.txt";
+public class FileCacheManager implements CacheManager {
+    private final String fileName = "Solution.txt";
     private HashMap<String, Solution> localCache = new HashMap<>();
 
-    public MyCacheManager() {
+    public FileCacheManager() {
         loadLocalCacheFromFile();
     }
 

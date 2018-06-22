@@ -1,5 +1,10 @@
 package solver;
 
-public interface Solution<T> {
+import models.State;
+
+import java.util.ArrayList;
+
+public interface Solution {
     void printSteps();
+    void reverse();
 }

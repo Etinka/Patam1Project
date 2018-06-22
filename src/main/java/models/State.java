@@ -1,9 +1,12 @@
 package models;
 
 
-public class State<T extends Comparable<T>> implements Comparable<State<T>> {
+import java.io.Serializable;
+
+public class State<T extends Comparable<T>> implements Comparable<State<T>>, Serializable {
     private T state;
     private State<T> cameFrom;
+    private double cost;
 
     public State(T state) {
         this.state = state;
@@ -26,4 +29,14 @@ public class State<T extends Comparable<T>> implements Comparable<State<T>> {
     public int compareTo(State<T> o) {
         return state.compareTo(o.state);
     }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+
 }

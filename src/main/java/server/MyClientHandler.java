@@ -1,7 +1,7 @@
 package server;
 
 import cache.CacheManager;
-import cache.MyCacheManager;
+import cache.FileCacheManager;
 import solver.MySolver;
 import solver.Solution;
 import solver.Solver;
@@ -12,7 +12,7 @@ import java.io.*;
  * has the responsibility of closing the streams
  */
 public class MyClientHandler implements ClientHandler {
-    private CacheManager cacheManager = new MyCacheManager();
+    private CacheManager cacheManager = new FileCacheManager();
     private Solver solver = new MySolver();
 
     @Override
@@ -27,12 +27,12 @@ public class MyClientHandler implements ClientHandler {
             StringBuilder builder = new StringBuilder();
             while (!(line = inFClient.readLine()).equals("done")) {
                 builder.append(line);
-                builder.append("\n");
+//                builder.append("\n");
                 numRows++;
                 numCol = line.length();
             }
             //Converting to Solution
-//            Solution<String> level = new MySolution<S>(builder.toString(), new ArrayList<>());
+//            Solution<String> level = new AlgoSolution<S>(builder.toString(), new ArrayList<>());
 //            System.out.println("Printing Level:");
 //            level.printFinalBoard();
 //            System.out.println();
@@ -46,7 +46,7 @@ public class MyClientHandler implements ClientHandler {
             }
 //            System.out.println("Printing Solution:");
 //            solution.printFinalBoard();
-            System.out.println("Printing Solution steps:");
+            System.out.println("Printing Solution steps: ");
             solution.printSteps();
 
             //sending to user

@@ -38,13 +38,11 @@ public class Step {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Click on row number ");
         builder.append(rowNum);
-        builder.append(", column number ");
+        builder.append(",");
         builder.append(colNum);
-        builder.append(" ");
+        builder.append(",");
         builder.append(clicksNum);
-        builder.append(" times");
         return builder.toString();
     }
 }

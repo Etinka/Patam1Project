@@ -1,25 +1,20 @@
 package algorithms;
 
 import models.State;
-import solver.MySolution;
 import solver.Solution;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.PriorityQueue;
 
-public class BestFirstSearch<T extends Comparable<T>> extends BaseAlgorithm<T> {
+public class BestFirstSearch<T extends Comparable<T>> extends CommonSearcher<T> {
 
     @Override
-    public Solution<T> search(Searchable<T> s) {
-        startSearch();
-        //Initializing
-        PriorityQueue<State<T>> openList = new PriorityQueue<>();
+    Solution searchAlgorithm(Searchable<T> s) {
         HashSet<State<T>> closedSet = new HashSet<>();
-        openList.add(s.getInitialState());
+        addToOpenList(s.getInitialState());
 
-        while (openList.size() > 0) {
-            State<T> n = openList.poll();
+        while (!openList.isEmpty()) {
+            State<T> n = popOpenList();
             closedSet.add(n);
 
             if (s.isGoal(n)) {
@@ -28,30 +23,22 @@ public class BestFirstSearch<T extends Comparable<T>> extends BaseAlgorithm<T> {
             }
             ArrayList<State<T>> successors = s.getAllPossibleStates(n);
             for (State<T> state : successors) {
-                if (!closedSet.contains(state) && !openList.contains(state)) {
+                if (!closedSet.contains(state)) {
                     state.setCameFrom(n);
-                    openList.add(state);
+                    state.setCost(state.getCost() + 1);
+                    if (!openList.contains(state)) {
+                        addToOpenList(state);
+                    } else if (openList.removeIf(e -> e.equals(state) && e.getCost() > state.getCost())) {
+                        //Removes the "state" object from the queue if the cost is higher then the new state cost
+                        //And then adding it again with the new cost
+                        addToOpenList(state);
+                    }
                 }
-                //TODO do we need "else"???
             }
 
         }
 
-        endSearch();
-        return new MySolution<>(new ArrayList<>());//TODO change
+        return null;
     }
-
-    Solution<T> backtraceSolution(State<T> state) {
-        ArrayList<State<T>> list = new ArrayList<>();
-        State<T> n = state;
-        while (n.getCameFrom() != null) {
-            list.add(0, n.getCameFrom());
-            n = n.getCameFrom();
-        }
-
-        return new MySolution(list);
-        //TODO replace null
-    }
-
 
 }

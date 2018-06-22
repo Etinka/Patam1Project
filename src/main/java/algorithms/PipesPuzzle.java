@@ -170,7 +170,7 @@ public class PipesPuzzle implements Searchable<String> {
             case 'J':
                 return 'L';
             default:
-                return '-';
+                return ' ';
         }
     }
 
