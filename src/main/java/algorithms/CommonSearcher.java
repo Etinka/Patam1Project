@@ -44,8 +44,9 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
     Solution backtraceSolution(State<T> state) {
         ArrayList<State<T>> list = new ArrayList<>();
         State<T> n = state;
+        list.add(n);
         while (n.getCameFrom() != null) {
-            list.add(0, n.getCameFrom());
+            list.add(n.getCameFrom());
             n = n.getCameFrom();
         }
         Solution solution = new AlgoSolution<>(list);

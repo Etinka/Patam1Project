@@ -61,6 +61,17 @@ public class PipesPuzzleTest {
         assertTrue(pipesPuzzle.isGoal(state));
     }
 
+    @Test
+    public void isGoalInTheMiddleSolution() {
+//        String board = "sL7g-7"; this is problematic with g and s togther
+        String board = "s|7-g7";
+        int numRows = 2;
+        int numCols = 3;
+        PuzzleState state = new PuzzleState(convertStringToChar(board, numRows, numCols), numRows);
+        PipesPuzzle pipesPuzzle = new PipesPuzzle(state, numRows, numCols);
+        assertTrue(pipesPuzzle.isGoal(state));
+    }
+
     @Test //todo the circle is not working
     public void isGoalWithCircleInTheMiddleSolution() {
         String board = "s7|LJ7g-J";
@@ -72,7 +83,8 @@ public class PipesPuzzleTest {
 
     @Test
     public void possibleStates() {
-        String board = "s|LF|JL|g";
+//        String board = "s|LF|JL|g";
+        String board = "s-LL-LL-g";
 //        String board = "s7|LJ7g-J";
         PuzzleState state = new PuzzleState(convertStringToChar(board, numRows, numCols), numRows);
         PipesPuzzle pipesPuzzle = new PipesPuzzle(state, 3, 3);

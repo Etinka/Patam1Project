@@ -3,17 +3,19 @@ package algorithms;
 import models.PuzzleState;
 import models.State;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PipesPuzzle implements Searchable<char[][]> {
     private PuzzleState initialState;
     private int colNum;
     private int rowNum;
 
-    public PipesPuzzle(PuzzleState initialState, int colNum, int rowNum) {
+    public PipesPuzzle(PuzzleState initialState, int rowNum, int colNum) {
         this.initialState = initialState;
-        this.colNum = colNum;
         this.rowNum = rowNum;
+        this.colNum = colNum;
     }
 
     @Override
@@ -149,7 +151,7 @@ public class PipesPuzzle implements Searchable<char[][]> {
 
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum; j++) {
-                if (s.getState()[i][j] != 's' && s.getState()[i][j] != 'g') {
+//                if (s.getState()[i][j] != 's' && s.getState()[i][j] != 'g') {
                     char[][] newState = new char[rowNum][];
 
                     for (int l = 0; l < rowNum; l++) {
@@ -158,20 +160,37 @@ public class PipesPuzzle implements Searchable<char[][]> {
 
                     newState[i][j] = getNextChar(newState[i][j]);
                     possibleStates.add(new PuzzleState(newState, rowNum));
+//                }
+            }
+        }
+
+        System.out.println("getAllPossibleStates");
+        return possibleStates;
+    }
+   /* @Override
+    public List<State> getAllPossibleStates(State state) {
+        // TODO Auto-generated method stub
+        List<State> arrList = new ArrayList<State>();
+
+        char[][] state2D = state.getState();
+
+        for (int i=0; i < state2D.length; i++) {
+            for (int j=0; j < state2D[i].length; j++) {
+                // copy our state
+                char[][] newPossible = new char[state2D.length][state2D[i].length];
+                for (int k=0; k < state2D.length; k++) {
+                    System.arraycopy(state2D[k], 0, newPossible[k], 0, state2D[k].length);
                 }
+
+                newPossible[i][j] = changePipe(state2D[i][j]);
+                arrList.add(new State(newPossible, new Point(i,j)));
             }
         }
 
 
-        /*for (int i = 1; i < initialState.getState().length() - 1; i++) {
-            StringBuilder newState = new StringBuilder(s.getState());
-            newState.setCharAt(i, getNextChar(newState.charAt(i)));
-            possibleStates.add(new PuzzleState<>(newState.toString()));
-        }*/
-        System.out.println("getAllPossibleStates");
-        return possibleStates;
+        return arrList;
     }
-
+*/
     private char getNextChar(char c) {
         switch (c) {
             case '|':
@@ -186,6 +205,10 @@ public class PipesPuzzle implements Searchable<char[][]> {
                 return 'J';
             case 'J':
                 return 'L';
+            case 's':
+                return 's';
+            case 'g':
+                return 'g';
             default:
                 return ' ';
         }

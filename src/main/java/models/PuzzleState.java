@@ -76,7 +76,14 @@ public class PuzzleState implements State, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PuzzleState that = (PuzzleState) o;
-        return Arrays.equals(state, that.state);
+        for (int i = 0; i < rowNum; i++) {
+            for (int j = 0; j < state[i].length; j++) {
+                if(state[i][j] != that.state[i][j])
+                    return false;
+            }
+        }
+        return true;
+//        return Arrays.equals(state, that.state);
     }
 
     @Override
