@@ -2,13 +2,12 @@ package server;
 
 import cache.CacheManager;
 import cache.FileCacheManager;
-import models.State;
 import solver.MySolver;
+import solver.PipesPuzzleSolution;
 import solver.Solution;
 import solver.Solver;
 
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * has the responsibility of closing the streams
@@ -41,16 +40,12 @@ public class PipesPuzzleClientHandler implements ClientHandler {
                 solution = solver.solve(convertStringToChar(level, numRows, numCol), numRows, numCol);
                 cacheManager.store(level, solution);
             }
-            System.out.println("Printing Solution steps: ");
-            ArrayList<State> states = solution.getSteps();
 
-            for (State state : states) {
-                if (state.getStep() != null) {
-                    System.out.println(state.getStep());
-                }
-            }
-            //sending to user
-//            outTC.println(solution.getFinalBoard());
+            PipesPuzzleSolution pipesPuzzleSolution = new PipesPuzzleSolution(solution);
+
+            System.out.println("Printing Solution steps: ");
+            pipesPuzzleSolution.printSteps();
+
             outTC.flush();
 
             System.out.println("done");

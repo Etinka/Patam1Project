@@ -1,30 +1,26 @@
 package models;
 
+import java.awt.*;
+
 public class Step {
-    private int colNum;
-    private int rowNum;
+    private Point point;
     private int clicksNum;
 
     public Step(int rowNum, int colNum, int clicksNum) {
-        this.colNum = colNum;
-        this.rowNum = rowNum;
+        this(new Point(rowNum, colNum), clicksNum);
+    }
+
+    public Step(Point point, int clicksNum) {
+        this.point = point;
         this.clicksNum = clicksNum;
     }
 
-    public int getColNum() {
-        return colNum;
+    public Step() {
+        this(new Point(), 0);
     }
 
-    public void setColNum(int colNum) {
-        this.colNum = colNum;
-    }
-
-    public int getRowNum() {
-        return rowNum;
-    }
-
-    public void setRowNum(int rowNum) {
-        this.rowNum = rowNum;
+    public Point getPoint() {
+        return point;
     }
 
     public int getClicksNum() {
@@ -38,11 +34,18 @@ public class Step {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(rowNum);
+        builder.append(point.x);
         builder.append(",");
-        builder.append(colNum);
+        builder.append(point.y);
         builder.append(",");
         builder.append(clicksNum);
         return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        return point == ((Step) obj).point;
     }
 }

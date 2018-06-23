@@ -2,9 +2,9 @@ package solver;
 
 import models.State;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Solution<T> {
-    ArrayList<State<T>> getSteps();
+    List<State<T>> getSteps();
     void reverse();
 }

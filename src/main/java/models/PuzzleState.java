@@ -28,7 +28,7 @@ public class PuzzleState implements State, Serializable {
     @Override
     public Step getStep() {
         if (cameFrom == null) {
-            return null;
+            return new Step();
         }
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < state[i].length; j++) {
@@ -83,7 +83,6 @@ public class PuzzleState implements State, Serializable {
             }
         }
         return true;
-//        return Arrays.equals(state, that.state);
     }
 
     @Override

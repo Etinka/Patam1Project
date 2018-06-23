@@ -1,5 +1,6 @@
-package algorithms;
+package tests;
 
+import algorithms.PipesPuzzle;
 import models.PuzzleState;
 import models.State;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static tests.TestUtils.convertStringToChar;
 
 public class PipesPuzzleTest {
 
@@ -102,12 +104,4 @@ public class PipesPuzzleTest {
     public void getAllPossibleStates() {
     }
 
-    private char[][] convertStringToChar(String levelString, int rowNum, int colNum) {
-        char[][] level = new char[rowNum][colNum];
-        for (int i = 0; i < rowNum; i++) {
-            level[i] = new char[colNum];
-            level[i] = levelString.substring(i * colNum, (i * colNum) + colNum).toCharArray();
-        }
-        return level;
-    }
 }

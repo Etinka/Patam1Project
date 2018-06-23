@@ -5,17 +5,18 @@ import models.State;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class AlgoSolution<T extends Comparable<T>> implements Solution, Serializable {
-    private ArrayList<State<T>> steps;
+    private List<State<T>> steps;
 
-    public AlgoSolution(ArrayList<State<T>> steps) {
+    public AlgoSolution(List<State<T>> steps) {
         //Move to solution
         this.steps = steps;
     }
 
     @Override
-    public ArrayList<State<T>> getSteps() {
+    public List<State<T>> getSteps() {
         return steps;
     }
 

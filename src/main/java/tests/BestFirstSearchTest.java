@@ -1,14 +1,25 @@
-package algorithms;
+package tests;
 
+import algorithms.BestFirstSearch;
+import algorithms.PipesPuzzle;
 import models.PuzzleState;
 import models.State;
+import models.Step;
+import org.junit.Assert;
 import org.junit.Test;
 import solver.Solution;
 
-import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summarizingInt;
 import static org.junit.Assert.*;
+import static tests.TestUtils.convertStringToChar;
 
 public class BestFirstSearchTest {
 
@@ -74,9 +85,9 @@ public class BestFirstSearchTest {
         }
         System.out.println("Final solution:");
 
-        ArrayList<State> states = solution.getSteps();
+        List<State> states = solution.getSteps();
 
-        for (State state : states) {
+       /* for (State state : states) {
             if (state.getStep() != null) {
                 System.out.println(state.getStep());
                 counters[state.getStep().getRowNum()][state.getStep().getColNum()]++;
@@ -88,7 +99,7 @@ public class BestFirstSearchTest {
                 counters[state.getStep().getRowNum()][state.getStep().getColNum()]++;
             }
         }
-
+*/
         System.out.println("Counters:");
 
         for (int i = 0; i < 3; i++) {
@@ -99,6 +110,53 @@ public class BestFirstSearchTest {
         }
     }
 
+
+    @Test
+    public void duplicates() throws Exception {
+
+        List<Step> items = new ArrayList<>();
+        items.add(new Step(1, 2, 1));
+        items.add(new Step(1, 2, 1));
+        items.add(new Step(0, 2, 1));
+        items.add(new Step(1, 2, 1));
+
+
+        Map<Step, Long> result = new HashMap<>();
+
+
+        Map <Point, Long> collect = items.stream()
+                .collect(Collectors.groupingBy(Step::getPoint, Collectors.counting()));
+        items.clear();
+        for (Point point: collect.keySet()) {
+            items.add(new Step(point, collect.get(point).intValue()));
+
+        }
+     /*   final Map<String, String> mostFrequentCities =
+                items.stream()
+                        .collect(Collectors.groupingBy(
+                                Step::getRowNumString,
+//                                Collectors.collectingAndThen(
+                                        Collectors.groupingBy(Step::getRowNumString, Collectors.counting())
+//                                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()
+//                                )
+                        ));
+*/
+//        List<Integer> collect =
+//                items.stream()
+//                        .collect(Collectors.groupingBy(
+//                                Step::getRowNum,
+//                                Collectors.mapping(Step::getRowNum, Collectors.toList()))
+//                        );
+        //= items.stream()
+//                .collect(Collectors.groupingBy(str -> str, counting()));
+//                        Function.identity(), Collectors.counting()));
+// Collections.frequency(list, new Student("Ram", 19)));
+//        items.stream().map(Step::getEmpName).filter(emId.getEmpName()::equals).count();
+
+
+
+        Assert.assertEquals(3, Collections.frequency(items, new Step(1, 2, 1)));
+    }
 
     @Test
     public void testEquals() {
@@ -119,14 +177,5 @@ public class BestFirstSearchTest {
         assertTrue(state.equals(state2));
         assertFalse(state.equals(stat32));
         assertTrue(openList.contains(state));
-    }
-
-    private char[][] convertStringToChar(String levelString, int rowNum, int colNum) {
-        char[][] level = new char[rowNum][colNum];
-        for (int i = 0; i < rowNum; i++) {
-            level[i] = new char[colNum];
-            level[i] = levelString.substring(i * colNum, (i * colNum) + colNum).toCharArray();
-        }
-        return level;
     }
 }
