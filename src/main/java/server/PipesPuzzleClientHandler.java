@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * has the responsibility of closing the streams
  */
-public class MyClientHandler implements ClientHandler {
+public class PipesPuzzleClientHandler implements ClientHandler {
     private CacheManager cacheManager = new FileCacheManager();
     private Solver solver = new MySolver();
 
@@ -29,15 +29,10 @@ public class MyClientHandler implements ClientHandler {
             StringBuilder builder = new StringBuilder();
             while (!(line = inFClient.readLine()).equals("done")) {
                 builder.append(line);
-//                builder.append("\n");
                 numRows++;
                 numCol = line.length();
             }
-            //Converting to Solution
-//            Solution<String> level = new AlgoSolution<S>(builder.toString(), new ArrayList<>());
-//            System.out.println("Printing Level:");
-//            level.printFinalBoard();
-//            System.out.println();
+
             String level = builder.toString();
             //Getting solution from the cache manager
             Solution solution = cacheManager.load(level);
@@ -46,13 +41,10 @@ public class MyClientHandler implements ClientHandler {
                 solution = solver.solve(convertStringToChar(level, numRows, numCol), numRows, numCol);
                 cacheManager.store(level, solution);
             }
-//            System.out.println("Printing Solution:");
-//            solution.printFinalBoard();
             System.out.println("Printing Solution steps: ");
             ArrayList<State> states = solution.getSteps();
 
-            for (State state : states
-                    ) {
+            for (State state : states) {
                 if (state.getStep() != null) {
                     System.out.println(state.getStep());
                 }

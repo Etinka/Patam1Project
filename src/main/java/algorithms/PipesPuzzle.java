@@ -151,46 +151,21 @@ public class PipesPuzzle implements Searchable<char[][]> {
 
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum; j++) {
-//     TODO check we added           if (s.getState()[i][j] != 's' && s.getState()[i][j] != 'g') {
-                    char[][] newState = new char[rowNum][];
+                char[][] newState = new char[rowNum][];
 
-                    for (int l = 0; l < rowNum; l++) {
-                        newState[l] = s.getState()[l].clone();
-                    }
-
-                    newState[i][j] = getNextChar(newState[i][j]);
-                    possibleStates.add(new PuzzleState(newState, rowNum));
-//                }
-            }
-        }
-
-        System.out.println("getAllPossibleStates");
-        return possibleStates;
-    }
-   /* @Override
-    public List<State> getAllPossibleStates(State state) {
-        // TODO Auto-generated method stub
-        List<State> arrList = new ArrayList<State>();
-
-        char[][] state2D = state.getState();
-
-        for (int i=0; i < state2D.length; i++) {
-            for (int j=0; j < state2D[i].length; j++) {
-                // copy our state
-                char[][] newPossible = new char[state2D.length][state2D[i].length];
-                for (int k=0; k < state2D.length; k++) {
-                    System.arraycopy(state2D[k], 0, newPossible[k], 0, state2D[k].length);
+                for (int l = 0; l < rowNum; l++) {
+                    newState[l] = s.getState()[l].clone();
                 }
 
-                newPossible[i][j] = changePipe(state2D[i][j]);
-                arrList.add(new State(newPossible, new Point(i,j)));
+                newState[i][j] = getNextChar(newState[i][j]);
+                possibleStates.add(new PuzzleState(newState, rowNum));
             }
         }
 
-
-        return arrList;
+//        System.out.println("getAllPossibleStates");
+        return possibleStates;
     }
-*/
+
     private char getNextChar(char c) {
         switch (c) {
             case '|':

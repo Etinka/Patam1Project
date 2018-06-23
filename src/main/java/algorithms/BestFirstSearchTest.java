@@ -6,7 +6,6 @@ import org.junit.Test;
 import solver.Solution;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 
 import static org.junit.Assert.*;
@@ -14,35 +13,56 @@ import static org.junit.Assert.*;
 public class BestFirstSearchTest {
 
     @Test
-    public void searchAlgorithm() {
+    public void searchAlgorithmTest() {
         String board = "s|LF|JL|g";//s-7F-J
         /*
+        initial:
+        s|L
+        F|J
+        L|g
 
+        Result:
         s-7
         F-J
         L-g
-
         * */
-//        String board = "s-7F-JL|g";//works
 
-//        String board = "sL7g-7";
-//        String board = "s|7-g7";
-        //solution = "s-7-gJ
 
         int numRows = 3;
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
         Solution solution = new BestFirstSearch<String>().search(pipesPuzzle);
-        ArrayList<State> states = solution.getSteps();
         addingCounters(solution);
-       /* for (State state : states
-                ) {
-            if (state.getStep() != null) {
-                System.out.println(state.getStep());
-            }
-        }*/
-        assertEquals(3, solution.getSteps().size());
+
+        assertEquals(6, solution.getSteps().size());
+    }
+
+    //TODO this does not work because of s+g attached
+    @Test
+    public void searchAlgorithmTest2() {
+        String board = "s|Lg|JL|-";
+        /*
+        initial:
+        s|L
+        g|J
+        L|-
+
+        Result:
+        s-7
+        g-J
+        L|-
+        * */
+
+
+        int numRows = 3;
+        int numCols = 3;
+        PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
+                numRows), numRows, numCols);
+        Solution solution = new BestFirstSearch<String>().search(pipesPuzzle);
+        addingCounters(solution);
+
+        assertEquals(6, solution.getSteps().size());
     }
 
     private void addingCounters(Solution solution) {
@@ -52,17 +72,28 @@ public class BestFirstSearchTest {
                 counters[i][j] = 0;
             }
         }
+        System.out.println("Final solution:");
 
         ArrayList<State> states = solution.getSteps();
+
+        for (State state : states) {
+            if (state.getStep() != null) {
+                System.out.println(state.getStep());
+                counters[state.getStep().getRowNum()][state.getStep().getColNum()]++;
+            }
+        }
+
         for (State state : states) {
             if (state.getStep() != null) {
                 counters[state.getStep().getRowNum()][state.getStep().getColNum()]++;
             }
         }
 
+        System.out.println("Counters:");
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                System.out.print(counters[i][j]%3 + "_");
+                System.out.print(counters[i][j] + "_");
             }
             System.out.println();
         }

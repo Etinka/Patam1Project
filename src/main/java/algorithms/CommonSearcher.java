@@ -12,7 +12,7 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
 
     private int evaluatedNodes = 0;
 
-    abstract Solution searchAlgorithm(Searchable<T> s);
+    abstract Solution searchAlgorithm(Searchable s);
 
     void addNode() {
         evaluatedNodes++;
