@@ -18,7 +18,7 @@ public class BestFirstSearch<T extends Comparable<T>> extends CommonSearcher<T> 
             closedSet.add(n);
 
             if (s.isGoal(n)) {
-                System.out.println("s.isGoal(n)");
+//                System.out.println("s.isGoal(n)");
                 return backtraceSolution(n);
             }
 

@@ -2,6 +2,7 @@ package server;
 
 import cache.CacheManager;
 import cache.FileCacheManager;
+import models.Step;
 import solver.MySolver;
 import solver.PipesPuzzleSolution;
 import solver.Solution;
@@ -43,13 +44,17 @@ public class PipesPuzzleClientHandler implements ClientHandler {
 
             PipesPuzzleSolution pipesPuzzleSolution = new PipesPuzzleSolution(solution);
 
-            System.out.println("Printing Solution steps: ");
-            pipesPuzzleSolution.printSteps();
+//            System.out.println("Printing Solution steps: ");
+//            pipesPuzzleSolution.printSteps();
 
+            for (Step step : pipesPuzzleSolution.getSteps()) {
+                outTC.println(step.toString());
+            }
+
+            outTC.println("done");
+
+//            System.out.println("done");
             outTC.flush();
-
-            System.out.println("done");
-
             inFClient.close();
             outTC.close();
         } catch (IOException e) {

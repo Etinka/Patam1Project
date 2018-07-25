@@ -21,14 +21,14 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
     @Override
     public Solution search(Searchable s) {
         long startTime = System.currentTimeMillis();
-        System.out.println("searchAlgorithm started");
+//        System.out.println("searchAlgorithm started");
 
         Solution solution = searchAlgorithm(s);
 
         long stopTime = System.currentTimeMillis();
         double elapsedTime = stopTime - startTime;
-        System.out.println("searchAlgorithm total seconds: " + elapsedTime / 1000);
-        System.out.println("searchAlgorithm total evaluated nodes: " + evaluatedNodes);
+//        System.out.println("searchAlgorithm total seconds: " + elapsedTime / 1000);
+//        System.out.println("searchAlgorithm total evaluated nodes: " + evaluatedNodes);
         return solution;
     }
 
@@ -53,19 +53,5 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
         solution.reverse();
         return solution;
     }
-
-
-//    public Solution backTrace(PuzzleState goalState) {
-//        Solution solution = new Solution();
-//        PuzzleState currentState = goalState;
-//        while (currentState.getCameFrom() != null) {
-//            // add step
-//            Point posClicked = currentState.getPosClicked();
-//            solution.addStep(posClicked.x + "," + posClicked.y + "," + 1);
-//            currentState = currentState.getCameFrom();
-//        }
-//        solution.reverse();
-//        return solution;
-//    }
 
 }
