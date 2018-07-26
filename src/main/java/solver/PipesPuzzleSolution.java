@@ -16,12 +16,12 @@ public class PipesPuzzleSolution implements Serializable {
     public PipesPuzzleSolution(Solution solution) {
         //Move to PipesPuzzleSolution
         List<State> states = solution.getSteps();
+
         List<Step> justSteps = new ArrayList<>();
-        State<?> currentState = states.get(states.size() - 1);
-        while(currentState.getCameFrom() != null) {
-            // add step
-            justSteps.add(currentState.getStep());
-            currentState = currentState.getCameFrom();
+        State<?> current = states.get(states.size() - 1);
+        while(current.getCameFrom() != null) {
+            justSteps.add(current.getStep());
+            current = current.getCameFrom();
         }
 
         Map<Point, Long> collect = justSteps.stream()
