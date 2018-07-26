@@ -166,6 +166,11 @@ public class PipesPuzzle implements Searchable<char[][]> {
         return possibleStates;
     }
 
+    @Override
+    public double grade(State state) {
+        return 0.0;
+    }
+
     private char getNextChar(char c) {
         switch (c) {
             case '|':

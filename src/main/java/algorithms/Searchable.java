@@ -9,4 +9,6 @@ public interface Searchable <T> {
     State<T> getInitialState();
     boolean isGoal(State<T> state);
     ArrayList<State<T>> getAllPossibleStates(State<T> s);
+
+    double grade(State state);
 }

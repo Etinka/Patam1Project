@@ -14,21 +14,20 @@ public class BestFirstSearch<T extends Comparable<T>> extends CommonSearcher<T> 
         HashSet<State> closedSet = new HashSet<>();
 
         while (!openList.isEmpty()) {
-            State n = popOpenList();
-            closedSet.add(n);
+            State state = popOpenList();
+            closedSet.add(state);
 
-            if (s.isGoal(n)) {
+            if (s.isGoal(state)) {
 //                System.out.println("s.isGoal(n)");
-                return backtraceSolution(n);
+                return backtraceSolution(state);
             }
 
-            ArrayList<State> allPossibleStates = s.getAllPossibleStates(n);
+            ArrayList<State> allPossibleStates = s.getAllPossibleStates(state);
 
-//            if (successors != null) {
             for (State possibleState : allPossibleStates) {
                 if (!closedSet.contains(possibleState)) {
-                    possibleState.setCameFrom(n);
-                    possibleState.setCost(n.getCost() + 1);
+                    possibleState.setCameFrom(state);
+                    possibleState.setCost(state.getCost() + 1);
                     if (!openList.contains(possibleState)) {
                         addToOpenList(possibleState);
                     } else if (openList.removeIf(e -> e.equals(possibleState) && e.getCost() > possibleState.getCost())) {
@@ -38,7 +37,6 @@ public class BestFirstSearch<T extends Comparable<T>> extends CommonSearcher<T> 
                     }
                 }
             }
-//            }
         }
 
         return null;
