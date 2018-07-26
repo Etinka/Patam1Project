@@ -11,9 +11,10 @@ public class DFS <T extends Comparable<T>> extends CommonSearcher<T>  {
     @Override
     Solution searchAlgorithm(Searchable s) {
         Stack<State> stack = new Stack();
+        HashSet<State> closedSet = new HashSet<>();
+
         stack.add(s.getInitialState());
 
-        HashSet<State> closedSet = new HashSet<>();
         while (!stack.isEmpty()) {
             State state = stack.pop();
             addNode();
