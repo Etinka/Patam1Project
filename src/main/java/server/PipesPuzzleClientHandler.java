@@ -31,6 +31,7 @@ public class PipesPuzzleClientHandler implements ClientHandler {
                 builder.append(line);
                 numRows++;
                 numCol = line.length();
+//                System.out.println(line);
             }
 
             String level = builder.toString();
