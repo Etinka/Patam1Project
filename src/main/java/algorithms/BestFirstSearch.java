@@ -6,7 +6,7 @@ import solver.Solution;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class BestFirstSearch<T extends Comparable<T>> extends CommonSearcher<T> {
+public class BestFirstSearch extends CommonSearcher {
 
     @Override
     Solution searchAlgorithm(Searchable s) {

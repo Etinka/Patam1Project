@@ -39,7 +39,7 @@ public class DFStest {
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
-        Solution solution = new DFS<String>().search(pipesPuzzle);
+        Solution solution = new DFS().search(pipesPuzzle);
         addingCounters(solution);
 
         assertEquals(6, solution.getSteps().size());
@@ -66,7 +66,7 @@ public class DFStest {
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
-        Solution solution = new DFS<String>().search(pipesPuzzle);
+        Solution solution = new DFS().search(pipesPuzzle);
         addingCounters(solution);
 
         assertEquals(6, solution.getSteps().size());

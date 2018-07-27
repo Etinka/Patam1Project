@@ -7,8 +7,8 @@ import solver.Solution;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
-    PriorityQueue<State<T>> openList = new PriorityQueue<>();
+abstract class CommonSearcher implements Searcher {
+    PriorityQueue<State<?>> openList = new PriorityQueue<>();
 
     private int evaluatedNodes = 0;
 
@@ -32,24 +32,24 @@ abstract class CommonSearcher<T extends Comparable<T>> implements Searcher {
         return solution;
     }
 
-    State<T> popOpenList() {
+    State<?> popOpenList() {
         addNode();
         return openList.poll();
     }
 
-    void addToOpenList(State<T> state) {
+    void addToOpenList(State<?> state) {
         openList.add(state);
     }
 
-    Solution backtraceSolution(State<T> state) {
-        ArrayList<State<T>> list = new ArrayList<>();
-        State<T> n = state;
+    Solution backtraceSolution(State<?> state) {
+        ArrayList<State<?>> list = new ArrayList<>();
+        State<?> n = state;
         list.add(n);
         while (n.getCameFrom() != null) {
             list.add(n.getCameFrom());
             n = n.getCameFrom();
         }
-        Solution solution = new AlgoSolution<>(list);
+        Solution solution = new AlgoSolution(list);
         solution.reverse();
         return solution;
     }

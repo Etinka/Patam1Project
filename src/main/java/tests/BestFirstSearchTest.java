@@ -43,7 +43,7 @@ public class BestFirstSearchTest {
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
-        Solution solution = new BestFirstSearch<String>().search(pipesPuzzle);
+        Solution solution = new BestFirstSearch().search(pipesPuzzle);
         addingCounters(solution);
 
         assertEquals(6, solution.getSteps().size());
@@ -70,7 +70,7 @@ public class BestFirstSearchTest {
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
-        Solution solution = new BestFirstSearch<String>().search(pipesPuzzle);
+        Solution solution = new BestFirstSearch().search(pipesPuzzle);
         addingCounters(solution);
 
         assertEquals(6, solution.getSteps().size());

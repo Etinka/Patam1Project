@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
-public class DFS <T extends Comparable<T>> extends CommonSearcher<T>  {
+public class DFS extends CommonSearcher {
     @Override
     Solution searchAlgorithm(Searchable s) {
         Stack<State> stack = new Stack();
@@ -26,7 +26,7 @@ public class DFS <T extends Comparable<T>> extends CommonSearcher<T>  {
 
             List<State> allPossibleStates = s.getAllPossibleStates(state);
 
-            for (State possibleState: allPossibleStates) {
+            for (State possibleState : allPossibleStates) {
                 if (!closedSet.contains(possibleState) && !stack.contains(possibleState)) {
                     possibleState.setCameFrom(state);
                     possibleState.setCost(state.getCost() + 1);

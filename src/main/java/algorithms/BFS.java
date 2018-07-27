@@ -6,7 +6,7 @@ import solver.Solution;
 import java.util.HashSet;
 import java.util.List;
 
-public class BFS <T extends Comparable<T>> extends CommonSearcher<T> {
+public class BFS extends CommonSearcher {
     @Override
     Solution searchAlgorithm(Searchable s) {
         addToOpenList(s.getInitialState());

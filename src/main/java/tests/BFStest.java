@@ -39,7 +39,7 @@ public class BFStest {
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
-        Solution solution = new BFS<String>().search(pipesPuzzle);
+        Solution solution = new BFS().search(pipesPuzzle);
         addingCounters(solution);
 
         assertEquals(6, solution.getSteps().size());
@@ -66,7 +66,7 @@ public class BFStest {
         int numCols = 3;
         PipesPuzzle pipesPuzzle = new PipesPuzzle(new PuzzleState(convertStringToChar(board, numRows, numCols),
                 numRows), numRows, numCols);
-        Solution solution = new BFS<String>().search(pipesPuzzle);
+        Solution solution = new BFS().search(pipesPuzzle);
         addingCounters(solution);
 
         assertEquals(6, solution.getSteps().size());

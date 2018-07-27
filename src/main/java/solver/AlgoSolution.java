@@ -3,20 +3,19 @@ package solver;
 import models.State;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AlgoSolution<T extends Comparable<T>> implements Solution, Serializable {
-    private List<State<T>> steps;
+public class AlgoSolution implements Solution, Serializable {
+    private List<State<?>> steps;
 
-    public AlgoSolution(List<State<T>> steps) {
+    public AlgoSolution(List steps) {
         //Move to solution
         this.steps = steps;
     }
 
     @Override
-    public List<State<T>> getSteps() {
+    public List<State<?>> getSteps() {
         return steps;
     }
 
