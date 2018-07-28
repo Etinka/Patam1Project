@@ -3,8 +3,8 @@ package tests;
 import algorithms.DFS;
 import algorithms.PipesPuzzle;
 import models.PuzzleState;
+import models.PuzzleStep;
 import models.State;
-import models.Step;
 import org.junit.Assert;
 import org.junit.Test;
 import solver.Solution;
@@ -42,7 +42,7 @@ public class DFStest {
         Solution solution = new DFS().search(pipesPuzzle);
         addingCounters(solution);
 
-        assertEquals(6, solution.getSteps().size());
+        assertEquals(6, solution.getStateList().size());
     }
 
     //TODO this does not work because of s+g attached
@@ -69,7 +69,7 @@ public class DFStest {
         Solution solution = new DFS().search(pipesPuzzle);
         addingCounters(solution);
 
-        assertEquals(6, solution.getSteps().size());
+        assertEquals(6, solution.getStateList().size());
     }
 
     private void addingCounters(Solution solution) {
@@ -81,7 +81,7 @@ public class DFStest {
         }
         System.out.println("Final solution:");
 
-        List<State> states = solution.getSteps();
+        List<State> states = solution.getStateList();
 
        /* for (State state : states) {
             if (state.getStep() != null) {
@@ -110,29 +110,29 @@ public class DFStest {
     @Test
     public void duplicates() throws Exception {
 
-        List<Step> items = new ArrayList<>();
-        items.add(new Step(1, 2, 1));
-        items.add(new Step(1, 2, 1));
-        items.add(new Step(0, 2, 1));
-        items.add(new Step(1, 2, 1));
+        List<PuzzleStep> items = new ArrayList<>();
+        items.add(new PuzzleStep(1, 2, 1));
+        items.add(new PuzzleStep(1, 2, 1));
+        items.add(new PuzzleStep(0, 2, 1));
+        items.add(new PuzzleStep(1, 2, 1));
 
 
-        Map<Step, Long> result = new HashMap<>();
+        Map<PuzzleStep, Long> result = new HashMap<>();
 
 
         Map <Point, Long> collect = items.stream()
-                .collect(Collectors.groupingBy(Step::getPoint, Collectors.counting()));
+                .collect(Collectors.groupingBy(PuzzleStep::getPoint, Collectors.counting()));
         items.clear();
         for (Point point: collect.keySet()) {
-            items.add(new Step(point, collect.get(point).intValue()));
+            items.add(new PuzzleStep(point, collect.get(point).intValue()));
 
         }
      /*   final Map<String, String> mostFrequentCities =
                 items.stream()
                         .collect(Collectors.groupingBy(
-                                Step::getRowNumString,
+                                PuzzleStep::getRowNumString,
 //                                Collectors.collectingAndThen(
-                                        Collectors.groupingBy(Step::getRowNumString, Collectors.counting())
+                                        Collectors.groupingBy(PuzzleStep::getRowNumString, Collectors.counting())
 //                                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()
 //                                )
                         ));
@@ -140,18 +140,18 @@ public class DFStest {
 //        List<Integer> collect =
 //                items.stream()
 //                        .collect(Collectors.groupingBy(
-//                                Step::getRowNum,
-//                                Collectors.mapping(Step::getRowNum, Collectors.toList()))
+//                                PuzzleStep::getRowNum,
+//                                Collectors.mapping(PuzzleStep::getRowNum, Collectors.toList()))
 //                        );
         //= items.stream()
 //                .collect(Collectors.groupingBy(str -> str, counting()));
 //                        Function.identity(), Collectors.counting()));
 // Collections.frequency(list, new Student("Ram", 19)));
-//        items.stream().map(Step::getEmpName).filter(emId.getEmpName()::equals).count();
+//        items.stream().map(PuzzleStep::getEmpName).filter(emId.getEmpName()::equals).count();
 
 
 
-        Assert.assertEquals(3, Collections.frequency(items, new Step(1, 2, 1)));
+        Assert.assertEquals(3, Collections.frequency(items, new PuzzleStep(1, 2, 1)));
     }
 
     @Test

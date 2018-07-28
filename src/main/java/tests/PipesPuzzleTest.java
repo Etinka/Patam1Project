@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -92,7 +93,7 @@ public class PipesPuzzleTest {
         PipesPuzzle pipesPuzzle = new PipesPuzzle(state, 3, 3);
         state.printState();
         System.out.println("*********");
-        ArrayList<State<char[][]>> list = pipesPuzzle.getAllPossibleStates(state);
+        List<State> list = pipesPuzzle.getAllPossibleStates(state);
         for (int i = 0; i < list.size(); i++) {
             list.get(i).printState();
             System.out.println();

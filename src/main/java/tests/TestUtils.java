@@ -35,13 +35,13 @@ class TestUtils {
         PuzzleState puzzleState4 = new PuzzleState(table4, 3);
         puzzleState4.setCameFrom(puzzleState3);
 
-        List<State> states = new ArrayList<>();
+        List<State<?>> states = new ArrayList<>();
         states.add(puzzleState2);
         states.add(puzzleState3);
         states.add(puzzleState4);
 
 
-        return new AlgoSolution(states);
+        return new AlgoSolution(states, puzzleState, puzzleState2);
     }
 
     static char[][] convertStringToChar(String levelString, int rowNum, int colNum) {

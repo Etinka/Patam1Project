@@ -28,14 +28,14 @@ public class PuzzleState implements State, Serializable {
     }
 
     @Override
-    public Step getStep() {
+    public PuzzleStep getStep() {
         if (cameFrom == null) {
-            return new Step();
+            return new PuzzleStep();
         }
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < state[i].length; j++) {
                 if (state[i][j] != cameFrom.getState()[i][j]) {
-                    return new Step(i, j, 1);
+                    return new PuzzleStep(i, j, 1);
                 }
             }
 

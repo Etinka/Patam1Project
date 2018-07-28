@@ -9,24 +9,24 @@ import java.util.Stack;
 
 public class DFS extends CommonSearcher {
     @Override
-    Solution searchAlgorithm(Searchable s) {
-        Stack<State> stack = new Stack();
+    <T> Solution searchAlgorithm(Searchable<T>  s) {
+        Stack<State<T>> stack = new Stack<>();
         HashSet<State> closedSet = new HashSet<>();
 
         stack.add(s.getInitialState());
 
         while (!stack.isEmpty()) {
-            State state = stack.pop();
+            State<T> state = stack.pop();
             addNode();
             closedSet.add(state);
 
             if (s.isGoal(state)) {
-                return backtraceSolution(state);
+                return backtraceSolution(state, s.getInitialState());
             }
 
-            List<State> allPossibleStates = s.getAllPossibleStates(state);
+            List<State<T>> allPossibleStates = s.getAllPossibleStates(state);
 
-            for (State possibleState : allPossibleStates) {
+            for (State<T> possibleState : allPossibleStates) {
                 if (!closedSet.contains(possibleState) && !stack.contains(possibleState)) {
                     possibleState.setCameFrom(state);
                     possibleState.setCost(state.getCost() + 1);

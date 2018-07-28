@@ -3,28 +3,28 @@ package algorithms;
 import models.State;
 import solver.Solution;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class BestFirstSearch extends CommonSearcher {
 
     @Override
-    Solution searchAlgorithm(Searchable s) {
+    <T> Solution searchAlgorithm(Searchable<T>  s) {
         addToOpenList(s.getInitialState());
         HashSet<State> closedSet = new HashSet<>();
 
         while (!openList.isEmpty()) {
-            State state = popOpenList();
+            State<T> state = popOpenList();
             closedSet.add(state);
 
             if (s.isGoal(state)) {
 //                System.out.println("s.isGoal(n)");
-                return backtraceSolution(state);
+                return backtraceSolution(state, s.getInitialState());
             }
 
-            ArrayList<State> allPossibleStates = s.getAllPossibleStates(state);
+            List<State<T>> allPossibleStates = s.getAllPossibleStates(state);
 
-            for (State possibleState : allPossibleStates) {
+            for (State<T> possibleState : allPossibleStates) {
                 if (!closedSet.contains(possibleState)) {
                     possibleState.setCameFrom(state);
                     possibleState.setCost(state.getCost() + 1);

@@ -9,20 +9,20 @@ import java.util.Random;
 
 public class HillClimbing extends CommonSearcher {
     @Override
-    Solution searchAlgorithm(Searchable s) {
-        State curState = s.getInitialState();
-        State bestNextState = null;
+    <T> Solution searchAlgorithm(Searchable<T> s) {
+        State<T> curState = s.getInitialState();
+        State<T> bestNextState = null;
 
         while (true) {
-            List<State> allPossibleStates = new ArrayList<>(s.getAllPossibleStates(curState));
-            for (State possibleState : allPossibleStates) {
+            List<State<T>> allPossibleStates = new ArrayList<>(s.getAllPossibleStates(curState));
+            for (State<T> possibleState : allPossibleStates) {
                 possibleState.setCameFrom(curState);
             }
             int grade = Integer.MAX_VALUE;
             if (Math.random() < 0.5) {
-                for (State possibleState : allPossibleStates) {
+                for (State<T> possibleState : allPossibleStates) {
                     addNode();
-                    int  g = s.grade(possibleState);
+                    int g = s.grade(possibleState);
                     if (g < grade) {
                         bestNextState = possibleState;
                         grade = g;
@@ -34,7 +34,7 @@ public class HillClimbing extends CommonSearcher {
                 }
 
                 if (s.isGoal(bestNextState)) {
-                    return backtraceSolution(bestNextState);
+                    return backtraceSolution(bestNextState, s.getInitialState());
                 }
 
                 if (s.grade(curState) > s.grade(bestNextState)) {

@@ -12,7 +12,7 @@ abstract class CommonSearcher implements Searcher {
 
     private int evaluatedNodes = 0;
 
-    abstract Solution searchAlgorithm(Searchable s);
+    abstract <T> Solution searchAlgorithm(Searchable<T> s);
 
     void addNode() {
         evaluatedNodes++;
@@ -32,16 +32,16 @@ abstract class CommonSearcher implements Searcher {
         return solution;
     }
 
-    State<?> popOpenList() {
+    <T> State<T> popOpenList() {
         addNode();
-        return openList.poll();
+        return (State<T>) openList.poll();
     }
 
     void addToOpenList(State<?> state) {
         openList.add(state);
     }
 
-    Solution backtraceSolution(State<?> state) {
+    Solution backtraceSolution(State<?> state, State<?> initialState) {
         ArrayList<State<?>> list = new ArrayList<>();
         State<?> n = state;
         list.add(n);
@@ -49,7 +49,7 @@ abstract class CommonSearcher implements Searcher {
             list.add(n.getCameFrom());
             n = n.getCameFrom();
         }
-        Solution solution = new AlgoSolution(list);
+        Solution solution = new AlgoSolution(list, initialState, state);
         solution.reverse();
         return solution;
     }

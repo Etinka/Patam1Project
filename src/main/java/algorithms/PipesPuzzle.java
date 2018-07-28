@@ -4,6 +4,7 @@ import models.PuzzleState;
 import models.State;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PipesPuzzle implements Searchable<char[][]> {
     private PuzzleState initialState;
@@ -158,7 +159,7 @@ public class PipesPuzzle implements Searchable<char[][]> {
     }
 
     @Override
-    public ArrayList<State<char[][]>> getAllPossibleStates(State<char[][]> s) {
+    public List<State<char[][]>> getAllPossibleStates(State<char[][]> s) {
         ArrayList<State<char[][]>> possibleStates = new ArrayList<>();
 
         for (int i = 0; i < rowNum; i++) {

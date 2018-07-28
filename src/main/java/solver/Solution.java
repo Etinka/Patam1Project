@@ -1,8 +1,16 @@
 package solver;
 
+import models.State;
+
 import java.util.List;
 
 public interface Solution {
-    List getSteps();
+    List getStateList();
+
     void reverse();
+
+    State<?> getInitialState();
+
+    State<?> getGoalState();
+
 }
