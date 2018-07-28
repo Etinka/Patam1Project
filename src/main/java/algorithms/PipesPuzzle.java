@@ -3,19 +3,31 @@ package algorithms;
 import models.PuzzleState;
 import models.State;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PipesPuzzle implements Searchable<char[][]> {
     private PuzzleState initialState;
-    private int colNum;
-    private int rowNum;
+    private int colNum, rowNum, startColNum, startRowNum, goalColNum, goalRowNum;
 
     public PipesPuzzle(PuzzleState initialState, int rowNum, int colNum) {
         this.initialState = initialState;
         this.rowNum = rowNum;
         this.colNum = colNum;
+        findStartAndGoal();
+    }
+
+    private void findStartAndGoal() {
+        for (int i = 0; i < rowNum; i++) {
+            for (int j = 0; j < colNum; j++) {
+                if (initialState.getState()[i][j] == 's') {
+                    startRowNum = i;
+                    startColNum = j;
+                } else if (initialState.getState()[i][j] == 'g') {
+                    goalColNum = i;
+                    goalRowNum = j;
+                }
+            }
+        }
     }
 
     @Override
@@ -167,8 +179,12 @@ public class PipesPuzzle implements Searchable<char[][]> {
     }
 
     @Override
-    public double grade(State state) {
-        return 0.0;
+    public int grade(State state) {
+        return heuristicGrade(state);
+    }
+
+    public int heuristicGrade(State<char[][]> state) {
+        return manhattanGrade(state.getState(), startRowNum, startColNum, Direction.Start);
     }
 
     private char getNextChar(char c) {
@@ -194,7 +210,69 @@ public class PipesPuzzle implements Searchable<char[][]> {
         }
     }
 
+    private int manhattanGrade(char[][] board, int row, int col, Direction c) {
+        int moveRight = col + 1;
+        int moveLeft = col - 1;
+        int moveUp = row - 1;
+        int moveDown = row + 1;
+        if (isValidIndex(row, col))
+            return 0;
+        if (board[row][col] == 'g')
+            return 1;
+        if (board[row][col] == ' ')
+            return 0;
+        if (board[row][col] == 'g' && c != Direction.Start)
+            return 0;
+        switch (c) {
+            case Start:
+                return Math.max(Math.max(Math.max(manhattanGrade(board, row, moveRight, Direction.Right), manhattanGrade(board, row, moveLeft, Direction.Left))
+                        , manhattanGrade(board, moveUp, col, Direction.Up))
+                        , manhattanGrade(board, moveDown, col, Direction.Down)) + 1;
+
+            case Up:
+                if (board[row][col] == '|')
+                    return manhattanGrade(board, moveUp, col, Direction.Up) + 1;
+                else if (board[row][col] == 'F')
+                    return manhattanGrade(board, row, moveRight, Direction.Right) + 1;
+                else if (board[row][col] == '7')
+                    return manhattanGrade(board, row, moveLeft, Direction.Left) + 1;
+                else
+                    return 0;
+            case Down:
+                if (board[row][col] == '|')
+                    return manhattanGrade(board, moveDown, col, Direction.Down) + 1;
+                else if (board[row][col] == 'L')
+                    return manhattanGrade(board, row, moveRight, Direction.Right) + 1;
+                else if (board[row][col] == 'J')
+                    return manhattanGrade(board, row, moveLeft, Direction.Left) + 1;
+                else
+                    return 0;
+            case Left:
+                if (board[row][col] == '-')
+                    return manhattanGrade(board, row, moveLeft, Direction.Left) + 1;
+                else if (board[row][col] == 'L')
+                    return manhattanGrade(board, moveUp, col, Direction.Up) + 1;
+                else if (board[row][col] == 'F')
+                    return manhattanGrade(board, moveDown, col, Direction.Down) + 1;
+                else
+                    return 0;
+            case Right:
+                if (board[row][col] == '-')
+                    return manhattanGrade(board, row, moveRight, Direction.Right) + 1;
+                else if (board[row][col] == '7')
+                    return manhattanGrade(board, moveDown, col, Direction.Down) + 1;
+                else if (board[row][col] == 'J')
+                    return manhattanGrade(board, moveUp, col, Direction.Up) + 1;
+                else
+                    return 0;
+            default:
+                return 0;
+        }
+
+
+    }
+
     enum Direction {
-        Up, Down, Left, Right
+        Up, Down, Left, Right, Start, End;
     }
 }

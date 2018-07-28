@@ -12,12 +12,8 @@ import solver.Solution;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summarizingInt;
 import static org.junit.Assert.*;
 import static tests.TestUtils.convertStringToChar;
 
