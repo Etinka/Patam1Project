@@ -1,21 +1,21 @@
 package tests;
 
-import algorithms.BFS;
+import algorithms.HillClimbing;
 import org.junit.Before;
 import org.junit.Test;
 import solver.PipesPuzzleSolution;
 
 import static org.junit.Assert.assertEquals;
 
-public class BFStest {
+public class HillClimbingTest {
 
     private String searcher;
 
     @Before
     public void setup() {
-        searcher = BFS.class.getName();
+        searcher = HillClimbing.class.getName();
     }
-
+    
     @Test
     public void testAlgo0() {
         PipesPuzzleSolution solution =
@@ -29,7 +29,7 @@ public class BFStest {
         PipesPuzzleSolution solution =
                 TestUtils.createPipesPuzzleSolution(searcher, 1);
         solution.printSteps();
-        assertEquals(8, solution.getSteps().size());
+        assertEquals(9, solution.getSteps().size());
     }
 
     @Test

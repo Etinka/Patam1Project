@@ -45,7 +45,6 @@ public class PipesPuzzle implements Searchable<char[][]> {
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum; j++) {
                 if (level[i][j] == 's') {
-
                     if (isValidIndex(i + 1, j)
                             && isMatch('s', level[i + 1][j], Direction.Down)) {
                         result = isGoal(i + 1, j, level, Direction.Down);

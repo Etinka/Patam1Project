@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PipesPuzzleSolution implements Serializable {
@@ -25,6 +26,7 @@ public class PipesPuzzleSolution implements Serializable {
         }
 
         Map<Point, Long> collect = justSteps.stream()
+                .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(PuzzleStep::getPoint, Collectors.counting()));
         for (Point point : collect.keySet()) {
             steps.add(new PuzzleStep(point, collect.get(point).intValue()));
