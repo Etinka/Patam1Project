@@ -9,10 +9,12 @@ public class PuzzleState implements State, Serializable {
     private State<char[][]> cameFrom;
     private double cost;
     private int rowNum;
+    private int hashCode;
 
     public PuzzleState(char[][] state, int rowNum) {
         this.state = state;
         this.rowNum = rowNum;
+        this.hashCode = hashCode();
     }
 
     @Override
@@ -73,20 +75,25 @@ public class PuzzleState implements State, Serializable {
 
     @Override
     public boolean equals(Object o) {
+        if (o instanceof PuzzleState) {
+            return this.hashCode == ((PuzzleState) o).hashCode;
+        }
+        return false;
+/*
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PuzzleState that = (PuzzleState) o;
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < state[i].length; j++) {
-                if(state[i][j] != that.state[i][j])
+                if (state[i][j] != that.state[i][j])
                     return false;
             }
         }
-        return true;
+        return true;*/
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(state);
+        return Arrays.deepHashCode(state);
     }
 }
