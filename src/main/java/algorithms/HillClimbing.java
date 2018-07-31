@@ -18,11 +18,11 @@ public class HillClimbing extends CommonSearcher {
             for (State<T> possibleState : allPossibleStates) {
                 possibleState.setCameFrom(curState);
             }
-            int grade = Integer.MAX_VALUE;
+            double grade = Double.MAX_VALUE;
             if (Math.random() < 0.5) {
                 for (State<T> possibleState : allPossibleStates) {
                     addNode();
-                    int g = s.grade(possibleState);
+                    double g = s.grade(possibleState);
                     if (g < grade) {
                         bestNextState = possibleState;
                         grade = g;
