@@ -10,6 +10,7 @@ public class PuzzleState implements State, Serializable {
     private double cost;
     private int rowNum;
     private int hashCode;
+    private double grade;
 
     public PuzzleState(char[][] state, int rowNum) {
         this.state = state;
@@ -61,6 +62,16 @@ public class PuzzleState implements State, Serializable {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public double getGrade() {
+        return grade;
+    }
+
+    @Override
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 
     @Override

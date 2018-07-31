@@ -36,7 +36,6 @@ public class PipesPuzzle implements Searchable<char[][]> {
         return initialState;
     }
 
-
     @Override
     public boolean isGoal(State<char[][]> state) {
         //Recursion
@@ -179,7 +178,7 @@ public class PipesPuzzle implements Searchable<char[][]> {
     }
 
     @Override
-    public int grade(State state) {
+    public double grade(State state) {
         return heuristicGrade(state);
     }
 

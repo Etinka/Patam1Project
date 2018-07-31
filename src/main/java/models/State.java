@@ -16,4 +16,8 @@ public interface State<T> extends Comparable<State<T>>, Serializable {
     void setCost(double cost);
 
     void printState();
+
+    double getGrade();
+
+    void setGrade(double grade);
 }

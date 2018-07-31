@@ -4,6 +4,7 @@ public class StateImpl<T> implements State<T> {
     private T state;
     private State<T> cameFrom;
     private double cost;
+    private double grade;
     private int hashCode;
     private Step step;
 
@@ -20,6 +21,13 @@ public class StateImpl<T> implements State<T> {
     @Override
     public T getState() {
         return state;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 
     @Override

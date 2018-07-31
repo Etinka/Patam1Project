@@ -11,5 +11,5 @@ public interface Searchable<T> {
 
     List<State<T>> getAllPossibleStates(State<T> s);
 
-    int grade(State<T> state);
+    double grade(State<T> state);
 }
