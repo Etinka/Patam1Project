@@ -1,9 +1,6 @@
 package solver;
 
-import algorithms.BestFirstSearch;
-import algorithms.DFS;
-import algorithms.HillClimbing;
-import algorithms.PipesPuzzle;
+import algorithms.*;
 import models.PuzzleState;
 
 public class MySolver implements Solver {

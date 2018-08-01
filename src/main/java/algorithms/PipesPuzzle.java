@@ -3,7 +3,10 @@ package algorithms;
 import models.PuzzleState;
 import models.State;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PipesPuzzle implements Searchable<char[][]> {
@@ -182,7 +185,7 @@ public class PipesPuzzle implements Searchable<char[][]> {
         return heuristicGrade(state);
     }
 
-    public int heuristicGrade(State<char[][]> state) {
+    public double heuristicGrade(State<char[][]> state) {
         return manhattanGrade(state.getState(), startRowNum, startColNum, Direction.Start);
     }
 
@@ -209,12 +212,12 @@ public class PipesPuzzle implements Searchable<char[][]> {
         }
     }
 
-    private int manhattanGrade(char[][] board, int row, int col, Direction c) {
+    private double manhattanGrade(char[][] board, int row, int col, Direction c) {
         int moveRight = col + 1;
         int moveLeft = col - 1;
         int moveUp = row - 1;
         int moveDown = row + 1;
-        if (isValidIndex(row, col))
+        if (!isValidIndex(row, col))
             return 0;
         if (board[row][col] == 'g')
             return 1;
@@ -224,51 +227,56 @@ public class PipesPuzzle implements Searchable<char[][]> {
             return 0;
         switch (c) {
             case Start:
-                return Math.max(Math.max(Math.max(manhattanGrade(board, row, moveRight, Direction.Right), manhattanGrade(board, row, moveLeft, Direction.Left))
-                        , manhattanGrade(board, moveUp, col, Direction.Up))
-                        , manhattanGrade(board, moveDown, col, Direction.Down)) + 1;
+                return minOfValues(manhattanGrade(board, moveUp, col, Direction.Up),
+                        manhattanGrade(board, moveDown, col, Direction.Down),
+                        manhattanGrade(board, row, moveRight, Direction.Right),
+                        manhattanGrade(board, row, moveLeft, Direction.Left));
 
             case Up:
                 if (board[row][col] == '|')
-                    return manhattanGrade(board, moveUp, col, Direction.Up) + 1;
+                    return manhattanGrade(board, moveUp, col, Direction.Up) ;
                 else if (board[row][col] == 'F')
-                    return manhattanGrade(board, row, moveRight, Direction.Right) + 1;
+                    return manhattanGrade(board, row, moveRight, Direction.Right) ;
                 else if (board[row][col] == '7')
-                    return manhattanGrade(board, row, moveLeft, Direction.Left) + 1;
+                    return manhattanGrade(board, row, moveLeft, Direction.Left) ;
                 else
-                    return 0;
+                    return Math.abs(Point.distance(row, col, goalColNum, goalRowNum));
             case Down:
                 if (board[row][col] == '|')
-                    return manhattanGrade(board, moveDown, col, Direction.Down) + 1;
+                    return manhattanGrade(board, moveDown, col, Direction.Down) ;
                 else if (board[row][col] == 'L')
-                    return manhattanGrade(board, row, moveRight, Direction.Right) + 1;
+                    return manhattanGrade(board, row, moveRight, Direction.Right) ;
                 else if (board[row][col] == 'J')
-                    return manhattanGrade(board, row, moveLeft, Direction.Left) + 1;
+                    return manhattanGrade(board, row, moveLeft, Direction.Left) ;
                 else
-                    return 0;
+                    return Math.abs(Point.distance(row, col, goalColNum, goalRowNum));
             case Left:
                 if (board[row][col] == '-')
-                    return manhattanGrade(board, row, moveLeft, Direction.Left) + 1;
+                    return manhattanGrade(board, row, moveLeft, Direction.Left) ;
                 else if (board[row][col] == 'L')
-                    return manhattanGrade(board, moveUp, col, Direction.Up) + 1;
+                    return manhattanGrade(board, moveUp, col, Direction.Up);
                 else if (board[row][col] == 'F')
-                    return manhattanGrade(board, moveDown, col, Direction.Down) + 1;
+                    return manhattanGrade(board, moveDown, col, Direction.Down) ;
                 else
-                    return 0;
+                    return Math.abs(Point.distance(row, col, goalColNum, goalRowNum));
             case Right:
                 if (board[row][col] == '-')
-                    return manhattanGrade(board, row, moveRight, Direction.Right) + 1;
+                    return manhattanGrade(board, row, moveRight, Direction.Right);
                 else if (board[row][col] == '7')
-                    return manhattanGrade(board, moveDown, col, Direction.Down) + 1;
+                    return manhattanGrade(board, moveDown, col, Direction.Down);
                 else if (board[row][col] == 'J')
-                    return manhattanGrade(board, moveUp, col, Direction.Up) + 1;
+                    return manhattanGrade(board, moveUp, col, Direction.Up) ;
                 else
-                    return 0;
+                    return Math.abs(Point.distance(row, col, goalColNum, goalRowNum));
             default:
                 return 0;
         }
 
 
+    }
+
+    public static double minOfValues(Double... values) {
+        return Collections.min(Arrays.asList(values));
     }
 
     enum Direction {

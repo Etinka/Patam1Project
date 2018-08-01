@@ -29,7 +29,7 @@ public class PipesPuzzleSolution implements Serializable {
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(PuzzleStep::getPoint, Collectors.counting()));
         for (Point point : collect.keySet()) {
-            steps.add(new PuzzleStep(point, collect.get(point).intValue()));
+            steps.add(new PuzzleStep(point, collect.get(point).intValue()%4));
         }
     }
 
