@@ -21,46 +21,55 @@ public class PipesPuzzleClientHandler implements ClientHandler {
     public void handleClient(InputStream inFromClient, OutputStream outToClient) {
         int numRows = 0;
         int numCol = 0;
-        PrintWriter outTC = new PrintWriter(outToClient);
         BufferedReader inFClient = new BufferedReader(new InputStreamReader(inFromClient));
         try {
             //Getting level from user
+            System.out.println("******** start of input from user");
             String line;
             StringBuilder builder = new StringBuilder();
             while (!(line = inFClient.readLine()).equals("done")) {
                 builder.append(line);
                 numRows++;
                 numCol = line.length();
-//                System.out.println(line);
+                //System.out.println(line);
             }
 
             String level = builder.toString();
-            //Getting solution from the cache manager
-            Solution solution = cacheManager.load(level);
-            if (solution == null) {
-                //solver
-                solution = solver.solve(convertStringToChar(level, numRows, numCol), numRows, numCol);
-                cacheManager.store(level, solution);
-            }
-
-            PipesPuzzleSolution pipesPuzzleSolution = new PipesPuzzleSolution(solution);
-
-//            System.out.println("Printing Solution steps: ");
-//            pipesPuzzleSolution.printSteps();
-
-            for (PuzzleStep step : pipesPuzzleSolution.getSteps()) {
-                outTC.println(step.toString());
-            }
-
-            outTC.println("done");
-
-//            System.out.println("done");
-            outTC.flush();
+            startSolution(numRows, numCol, level, outToClient);
             inFClient.close();
-            outTC.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void handleClient(int numRows, int numCol, String level, OutputStream outToClient) {
+        startSolution(numRows, numCol, level, outToClient);
+    }
+
+    private void startSolution(int numRows, int numCol, String level, OutputStream outToClient) {
+        //Getting solution from the cache manager
+        PrintWriter outTC = new PrintWriter(outToClient);
+
+        Solution solution = cacheManager.load(level);
+        if (solution == null) {
+            //solver
+            solution = solver.solve(convertStringToChar(level, numRows, numCol), numRows, numCol);
+            cacheManager.store(level, solution);
+        }
+
+        PipesPuzzleSolution pipesPuzzleSolution = new PipesPuzzleSolution(solution);
+
+//        System.out.println("Printing Solution steps: ");
+//        pipesPuzzleSolution.printSteps();
+
+        for (PuzzleStep step : pipesPuzzleSolution.getSteps()) {
+            outTC.println(step.toString());
+        }
+
+        outTC.println("done");
+        outTC.flush();
+        outTC.close();
     }
 
     private char[][] convertStringToChar(String levelString, int rowNum, int colNum) {
