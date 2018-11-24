@@ -1,8 +1,6 @@
 package server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -11,13 +9,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class MyMultiServer implements Server {
-    private ServerSocket serverSocket;
     private int port;
     private boolean stop = false;
     private ThreadPoolExecutor threadPoolExecutor;
     private int clientsCount = 0;
 
-    public MyMultiServer(int port, int threadsNumber) {
+    MyMultiServer(int port, int threadsNumber) {
         this.port = port;
         this.threadPoolExecutor = new ThreadPoolExecutor(threadsNumber, threadsNumber, 10, TimeUnit.SECONDS,
                 new PriorityBlockingQueue<>());
@@ -35,7 +32,7 @@ public class MyMultiServer implements Server {
     }
 
     private void startServer(ClientHandler clientHandler) throws IOException {
-        serverSocket = new ServerSocket(port);
+        ServerSocket serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout(5000);
         System.out.println("Server connected - waiting for client");
 
@@ -44,29 +41,14 @@ public class MyMultiServer implements Server {
                 Socket aClient = serverSocket.accept();
                 clientsCount++;
                 System.out.println("*** client number " + clientsCount + " is connected ***");
+                InputFromUserReader inputFromUserReader = new InputFromUserReader();
+                inputFromUserReader.readFromUser(aClient.getInputStream());
 
-                int numRows = 0;
-                int numCol = 0;
-                BufferedReader inFClient = new BufferedReader(new InputStreamReader(aClient.getInputStream()));
-                //Getting level from user
-                String line;
-                StringBuilder builder = new StringBuilder();
-                while (!(line = inFClient.readLine()).equals("done")) {
-                    builder.append(line);
-                    numRows++;
-                    numCol = line.length();
-                    System.out.println(line);
-                }
-//                System.out.println("end of input");
-
-                int finalNumCol = numCol;
-                int finalNumRows = numRows;
-
-                MultiServerPriorityRunnable priorityRunnable = new MultiServerPriorityRunnable(finalNumRows * finalNumCol) {
+                MultiServerPriorityRunnable priorityRunnable = new MultiServerPriorityRunnable(inputFromUserReader.numRows * inputFromUserReader.numCol) {
                     @Override
                     public void run() {
                         try {
-                            clientHandler.handleClient(finalNumRows, finalNumCol, builder.toString(), aClient.getOutputStream());
+                            clientHandler.handleClient(inputFromUserReader.numRows, inputFromUserReader.numCol, inputFromUserReader.output, aClient.getOutputStream());
                             aClient.close();
                         } catch (IOException e) {
                             e.printStackTrace();

@@ -19,24 +19,12 @@ public class PipesPuzzleClientHandler implements ClientHandler {
 
     @Override
     public void handleClient(InputStream inFromClient, OutputStream outToClient) {
-        int numRows = 0;
-        int numCol = 0;
-        BufferedReader inFClient = new BufferedReader(new InputStreamReader(inFromClient));
         try {
-            //Getting level from user
-            System.out.println("******** start of input from user");
-            String line;
-            StringBuilder builder = new StringBuilder();
-            while (!(line = inFClient.readLine()).equals("done")) {
-                builder.append(line);
-                numRows++;
-                numCol = line.length();
-                //System.out.println(line);
-            }
+            InputFromUserReader inputFromUserReader = new InputFromUserReader();
+            inputFromUserReader.readFromUser(inFromClient);
 
-            String level = builder.toString();
-            startSolution(numRows, numCol, level, outToClient);
-            inFClient.close();
+            String level = inputFromUserReader.output;
+            startSolution(inputFromUserReader.numRows, inputFromUserReader.numCol, level, outToClient);
         } catch (IOException e) {
             e.printStackTrace();
         }
