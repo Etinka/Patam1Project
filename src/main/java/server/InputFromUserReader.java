@@ -19,7 +19,7 @@ class InputFromUserReader {
             builder.append(line);
             numRows++;
             numCol = line.length();
-            System.out.println(line);
+//            System.out.println(line);
         }
         output = builder.toString();
     }

@@ -50,6 +50,7 @@ public class MyMultiServer implements Server {
                         try {
                             clientHandler.handleClient(inputFromUserReader.numRows, inputFromUserReader.numCol, inputFromUserReader.output, aClient.getOutputStream());
                             aClient.close();
+                          //  System.out.println("*** Finished with a client with priority " + this.getPuzzlePriority());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -59,12 +60,14 @@ public class MyMultiServer implements Server {
                 threadPoolExecutor.execute(priorityRunnable);
 
             } catch (SocketTimeoutException e) {
-                System.out.println("Client did not connect...");
+                if(threadPoolExecutor.getActiveCount() == 0){
+                    System.out.println("No  more tasks");
+                    this.stop();
+                }
             }
         }
         threadPoolExecutor.shutdown();
         serverSocket.close();
-
     }
 
     @Override

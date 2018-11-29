@@ -13,4 +13,7 @@ public abstract class MultiServerPriorityRunnable implements Comparable<MultiSer
         this.puzzlePriority = puzzlePriority;
     }
 
+    public int getPuzzlePriority() {
+        return puzzlePriority;
+    }
 }

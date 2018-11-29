@@ -12,9 +12,9 @@ public class MultiClientDemo {
         System.out.println("**** Multi Client Side ****");
         String client1 = "sL\n-g\ndone";
         String client2 = "s-L\n---\n--g\ndone";
+        startClient(client2);
         startClient(client1);
         startClient(client2);
-        return;
     }
 
     private static void startClient(String clientInput) throws IOException {
