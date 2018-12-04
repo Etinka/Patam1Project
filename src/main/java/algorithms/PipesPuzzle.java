@@ -189,7 +189,7 @@ public class PipesPuzzle implements Searchable<char[][]> {
         return manhattanGrade(state.getState(), startRowNum, startColNum, Direction.Start);
     }
 
-    private char getNextChar(char c) {
+    public static char getNextChar(char c) {
         switch (c) {
             case '|':
                 return '-';
