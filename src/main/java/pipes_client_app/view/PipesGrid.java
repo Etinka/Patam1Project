@@ -2,8 +2,6 @@ package pipes_client_app.view;
 
 
 import algorithms.PipesPuzzle;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.SnapshotParameters;
@@ -81,15 +79,17 @@ public class PipesGrid extends Canvas {
         redraw();
     }
 
-    public void setMazeData(char[][] mazeData, boolean initImages) {
+    public void setMazeData(char[][] mazeData) {
         this.mazeData = mazeData;
+        initImages();
+        redrawMaze();
+    }
+
+    private void redrawMaze() {
         double width = getWidth();
         double height = getHeight();
         colWidth = width / mazeData[0].length;
         rowHeight = height / mazeData.length;
-        if (initImages) {
-            initImages();
-        }
         redraw();
     }
 
@@ -186,7 +186,7 @@ public class PipesGrid extends Canvas {
     public void resize(double width, double height) {
         super.setWidth(width);
         super.setHeight(height);
-        setMazeData(mazeData, true);
+        redrawMaze();
     }
 
     @Override
