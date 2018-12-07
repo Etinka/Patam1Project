@@ -21,7 +21,7 @@ public class PipesClientApp extends Application {
         URL url = new File("src/main/java/pipes_client_app/view/MainWindow.fxml").toURL();
         Parent root = FXMLLoader.load(url);
         primaryStage.setTitle("Pipes Game");
-        primaryStage.setScene(new Scene(root, 400, 400));
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
     }
 }

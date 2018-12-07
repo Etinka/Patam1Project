@@ -16,16 +16,37 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class PipesGrid extends Canvas {
+    private static final String ANGLE_PIPE_DEFAULT = "./resources/TubeCorner-R01.png";
+    private static final String REGULAR_PIPE_DEFAULT = "./resources/Tube-R01.png";
+    private static final String BACKGROUND_DEFAULT = "./resources/Wall-R02.jpg";
+    private static final String GOAL_DEFAULT = "./resources/End-R01.png";
+    private static final String START_DEFAULT = "./resources/Start-R01.png";
 
     private char[][] mazeData;
 
-    private StringProperty regularPipeImage;
-    private StringProperty anglePipeImage;
+    private StringProperty regularPipeImage, anglePipeImage, backgroundImage, startImage, goalImage;
     private double colWidth;
     private double rowHeight;
 
-    private Image pipeImageVertical, pipeImageHorizontal, pipeImage0Rotation, pipeImage90Rotation, pipeImage180Rotation, pipeImage270Rotation;
+    private Image imagePipeVertical, imagePipeHorizontal, imagePipe0Rotation, imagePipe90Rotation,
+            imagePipe180Rotation, imagePipe270Rotation, imageBackground, imageStart, imageGoal;
 
+
+    public PipesGrid() {
+        regularPipeImage = new SimpleStringProperty();
+        anglePipeImage = new SimpleStringProperty();
+        backgroundImage = new SimpleStringProperty();
+        startImage = new SimpleStringProperty();
+        goalImage = new SimpleStringProperty();
+        addEventFilter(MouseEvent.MOUSE_CLICKED, (this::clickedOnPosition));
+    }
+
+
+    public void setMazeData(char[][] mazeData) {
+        this.mazeData = mazeData;
+        initImages();
+        redrawMaze();
+    }
 
     public StringProperty regularPipeImageProperty() {
         return regularPipeImage;
@@ -41,7 +62,7 @@ public class PipesGrid extends Canvas {
      */
     public String getRegularPipeImage() {
         if (regularPipeImage.get() == null || regularPipeImage.get().isEmpty()) {
-            return "./resources/straight-cartoon-pipe.jpg";
+            return REGULAR_PIPE_DEFAULT;
         }
         return regularPipeImage.get();
     }
@@ -60,15 +81,50 @@ public class PipesGrid extends Canvas {
      */
     public String getAnglePipeImage() {
         if (anglePipeImage.get() == null || anglePipeImage.get().isEmpty()) {
-            return "./resources/cartoon-pipe.jpg";
+            return ANGLE_PIPE_DEFAULT;
         }
         return anglePipeImage.get();
     }
 
-    public PipesGrid() {
-        regularPipeImage = new SimpleStringProperty();
-        anglePipeImage = new SimpleStringProperty();
-        addEventFilter(MouseEvent.MOUSE_CLICKED, (this::clickedOnPosition));
+    /**
+     * Returns the background image the user of the view set.
+     * If no image was set - a default will be used.
+     */
+    public String getBackgroundImage() {
+        if (backgroundImage.get() == null || backgroundImage.get().isEmpty()) {
+            return BACKGROUND_DEFAULT;
+        }
+        return backgroundImage.get();
+    }
+
+    public StringProperty backgroundImagePropertyProperty() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImageProperty(String backgroundImageProperty) {
+        this.backgroundImage.set(backgroundImageProperty);
+    }
+
+    public String getStartImage() {
+        if (startImage.get() == null || startImage.get().isEmpty()) {
+            return START_DEFAULT;
+        }
+        return startImage.get();
+    }
+
+    public StringProperty startImageProperty() {
+        return startImage;
+    }
+
+    public String getGoalImage() {
+        if (goalImage.get() == null || goalImage.get().isEmpty()) {
+            return GOAL_DEFAULT;
+        }
+        return goalImage.get();
+    }
+
+    public StringProperty goalImageProperty() {
+        return goalImage;
     }
 
     private void clickedOnPosition(MouseEvent event) {
@@ -77,12 +133,6 @@ public class PipesGrid extends Canvas {
 //        System.out.println("clickedOnPosition: " + row + ", " + col);
         mazeData[row][col] = PipesPuzzle.getNextChar(mazeData[row][col]);
         redraw();
-    }
-
-    public void setMazeData(char[][] mazeData) {
-        this.mazeData = mazeData;
-        initImages();
-        redrawMaze();
     }
 
     private void redrawMaze() {
@@ -99,6 +149,9 @@ public class PipesGrid extends Canvas {
         try {
             regularPipe = new Image(new FileInputStream(getRegularPipeImage()));
             anglePipe = new Image(new FileInputStream(getAnglePipeImage()));
+            imageBackground = new Image(new FileInputStream(getBackgroundImage()));
+            imageStart = new Image(new FileInputStream((getStartImage())));
+            imageGoal = new Image(new FileInputStream(getGoalImage()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -108,75 +161,68 @@ public class PipesGrid extends Canvas {
         //'F'
         ImageView iv = new ImageView(anglePipe);
         iv.setRotate(rotateImage);
-        pipeImage0Rotation = iv.snapshot(params, null);
+        imagePipe0Rotation = iv.snapshot(params, null);
         //'7'
         rotateImage = 90;
         iv.setRotate(rotateImage);
-        pipeImage90Rotation = iv.snapshot(params, null);
+        imagePipe90Rotation = iv.snapshot(params, null);
         //'J'
         rotateImage = 180;
         iv.setRotate(rotateImage);
-        pipeImage180Rotation = iv.snapshot(params, null);
+        imagePipe180Rotation = iv.snapshot(params, null);
         //'L'
         rotateImage = 270;
         iv.setRotate(rotateImage);
-        pipeImage270Rotation = iv.snapshot(params, null);
+        imagePipe270Rotation = iv.snapshot(params, null);
 
         //'|'
         rotateImage = 0;
         iv = new ImageView(regularPipe);
         iv.setRotate(rotateImage);
-        pipeImageVertical = iv.snapshot(params, null);
+        imagePipeVertical = iv.snapshot(params, null);
         //'-'
         rotateImage = 90;
         iv.setRotate(rotateImage);
-        pipeImageHorizontal = iv.snapshot(params, null);
+        imagePipeHorizontal = iv.snapshot(params, null);
     }
 
     private void redraw() {
         if (mazeData != null) {
             GraphicsContext graphicsContext = getGraphicsContext2D();
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
+            graphicsContext.drawImage(imageBackground, 0, 0, getWidth(), getHeight());
+
             for (int i = 0; i < mazeData.length; i++) {
                 for (int j = 0; j < mazeData[i].length; j++) {
                     Image image = null;
                     switch (mazeData[i][j]) {
                         case '|':
-                            image = pipeImageVertical;
+                            image = imagePipeVertical;
                             break;
                         case '-':
-                            image = pipeImageHorizontal;
+                            image = imagePipeHorizontal;
                             break;
                         case 'F':
-                            image = pipeImage0Rotation;
+                            image = imagePipe0Rotation;
                             break;
                         case '7':
-                            image = pipeImage90Rotation;
+                            image = imagePipe90Rotation;
                             break;
                         case 'J':
-                            image = pipeImage180Rotation;
+                            image = imagePipe180Rotation;
                             break;
                         case 'L':
-                            image = pipeImage270Rotation;
+                            image = imagePipe270Rotation;
                             break;
                         case ' ':
                             break;
                         case 'g':
-                            graphicsContext.setFill(Color.BLUE);
+                            image = imageGoal;
                             break;
                         case 's':
-                            graphicsContext.setFill(Color.YELLOW);
+                            image = imageStart;
                             break;
                     }
-                    graphicsContext.clearRect(j * colWidth, i * rowHeight, colWidth, rowHeight);
-
-                    if (image == null) {
-                        graphicsContext.fillRect(j * colWidth, i * rowHeight, colWidth, rowHeight);
-                        //This can be removed once there are images for start and goal
-                    } else {
-                        graphicsContext.drawImage(image, j * colWidth, i * rowHeight, colWidth, rowHeight);
-                    }
+                    graphicsContext.drawImage(image, j * colWidth, i * rowHeight, colWidth, rowHeight);
                 }
             }
         }

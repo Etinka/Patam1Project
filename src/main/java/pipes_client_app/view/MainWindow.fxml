@@ -59,8 +59,8 @@
         </HBox>
     </bottom>
     <center>
-        <PipesGrid fx:id="pipesGrid" regularPipeImage="./resources/straight-cartoon-pipe.jpg"
-                   anglePipeImage="./resources/cartoon-pipe.jpg" height="300.0" width="300.0"
+        <PipesGrid fx:id="pipesGrid" anglePipeImage="./resources/TubeCorner-R01.png"
+                   regularPipeImage="./resources/Tube-R01.png" height="500.0" width="500.0"
                    BorderPane.alignment="CENTER"/>
     </center>
 </BorderPane>
