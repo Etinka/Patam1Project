@@ -26,7 +26,7 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        pipesGrid.setMazeData(mazeData);
+        pipesGrid.setMazeData(mazeData, false);
     }
 
     public void start() {

@@ -2,6 +2,8 @@ package pipes_client_app.view;
 
 
 import algorithms.PipesPuzzle;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.SnapshotParameters;
@@ -71,7 +73,6 @@ public class PipesGrid extends Canvas {
         addEventFilter(MouseEvent.MOUSE_CLICKED, (this::clickedOnPosition));
     }
 
-
     private void clickedOnPosition(MouseEvent event) {
         int col = (int) (event.getX() / colWidth);
         int row = (int) (event.getY() / rowHeight);
@@ -80,13 +81,15 @@ public class PipesGrid extends Canvas {
         redraw();
     }
 
-    public void setMazeData(char[][] mazeData) {
+    public void setMazeData(char[][] mazeData, boolean initImages) {
         this.mazeData = mazeData;
         double width = getWidth();
         double height = getHeight();
         colWidth = width / mazeData[0].length;
         rowHeight = height / mazeData.length;
-        initImages();
+        if (initImages) {
+            initImages();
+        }
         redraw();
     }
 
@@ -177,5 +180,42 @@ public class PipesGrid extends Canvas {
                 }
             }
         }
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        super.setWidth(width);
+        super.setHeight(height);
+        setMazeData(mazeData, true);
+    }
+
+    @Override
+    public boolean isResizable() {
+        return true;
+    }
+
+    @Override
+    public double minHeight(double width) {
+        return 64;
+    }
+
+    @Override
+    public double maxHeight(double width) {
+        return 1000;
+    }
+
+    @Override
+    public double prefHeight(double width) {
+        return minHeight(width);
+    }
+
+    @Override
+    public double minWidth(double height) {
+        return 0;
+    }
+
+    @Override
+    public double maxWidth(double height) {
+        return 10000;
     }
 }
