@@ -116,6 +116,14 @@ public class PipesGrid extends Canvas {
         return startImage;
     }
 
+    public void setStartImage(String startImage) {
+        this.startImage.set(startImage);
+    }
+
+    public void setGoalImage(String goalImage) {
+        this.goalImage.set(goalImage);
+    }
+
     public String getGoalImage() {
         if (goalImage.get() == null || goalImage.get().isEmpty()) {
             return GOAL_DEFAULT;
@@ -143,7 +151,7 @@ public class PipesGrid extends Canvas {
         redraw();
     }
 
-    private void initImages() {
+     void initImages() {
         Image regularPipe = null;
         Image anglePipe = null;
         try {
@@ -186,7 +194,7 @@ public class PipesGrid extends Canvas {
         imagePipeHorizontal = iv.snapshot(params, null);
     }
 
-    private void redraw() {
+    void redraw() {
         if (mazeData != null) {
             GraphicsContext graphicsContext = getGraphicsContext2D();
             graphicsContext.drawImage(imageBackground, 0, 0, getWidth(), getHeight());
