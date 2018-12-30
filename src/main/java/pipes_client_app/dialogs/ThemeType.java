@@ -22,45 +22,49 @@ public enum ThemeType {
     public String getRegularPipe() {
         switch (this) {
             case Dark:
-                return "./resources/TubeCorner-R02.png";
+                return "./resources/dark/TubeCorner-R02.png";
             default:
-                return "./resources/Tube-R01.png";
+                return "./resources/glow/Tube-R01.png";
         }
     }
 
     public String getAnglePipe() {
         switch (this) {
             case Dark:
-                return "./resources/TubeCorner-R02.png";
+                return "./resources/dark/TubeCorner-R02.png";
             default:
-                return "./resources/TubeCorner-R01.png";
+                return "./resources/glow/TubeCorner-R01.png";
         }
     }
 
     public String getBackgroundImage() {
         switch (this) {
             case Dark:
-                return "./resources/Wall-R01.jpg";
+                return "./resources/dark/Wall-R01.jpg";
             default:
-                return "./resources/Wall-R02.jpg";
+                return "./resources/glow/Wall-R02.jpg";
         }
     }
 
     public String getEndImage() {
         switch (this) {
             case Dark:
-                return "./resources/End-R01A.png";
+                return "./resources/dark/End-R01A.png";
             default:
-                return "./resources/End-R01.png";
+                return "./resources/glow/End-R01.png";
         }
     }
 
     public String getStartImage() {
+        return "./resources/Start-R01.png";
+    }
+
+    public String getMusic() {
         switch (this) {
             case Dark:
-                return "./resources/End-R01A.png";
+                return "./resources/dark/Rocky theme song.mp3";
             default:
-                return "./resources/Start-R01.png";
+                return "./resources/glow/incredibles theme song.mp3";
         }
     }
 }

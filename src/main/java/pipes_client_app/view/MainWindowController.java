@@ -2,6 +2,8 @@ package pipes_client_app.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import pipes_client_app.dialogs.NakedObjectDisplayer;
 import pipes_client_app.dialogs.ServerConfigObject;
@@ -13,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
+    private MediaPlayer mediaPlayer;
 
     char[][] mazeData = {
             {'s', 'L', 'F', '-', 'J', '7', '7', '7', '7'},
@@ -78,6 +81,16 @@ public class MainWindowController implements Initializable {
         pipesGrid.setGoalImage(themeType.getEndImage());
         pipesGrid.initImages();
         pipesGrid.redraw();
+        playMusic(themeType.getMusic());
+    }
+
+    private void playMusic(String musicFile){
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+        }
+        Media hit = new Media(new File(musicFile).toURI().toString());
+        mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.play();
     }
 
 }
