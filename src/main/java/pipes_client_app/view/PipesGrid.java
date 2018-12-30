@@ -1,7 +1,6 @@
 package pipes_client_app.view;
 
 
-import algorithms.PipesPuzzle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.SnapshotParameters;
@@ -11,9 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import models.RowCol;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.function.Function;
 
 public class PipesGrid extends Canvas {
     private static final String ANGLE_PIPE_DEFAULT = "./resources/TubeCorner-R01.png";
@@ -38,13 +39,22 @@ public class PipesGrid extends Canvas {
         backgroundImage = new SimpleStringProperty();
         startImage = new SimpleStringProperty();
         goalImage = new SimpleStringProperty();
-        addEventFilter(MouseEvent.MOUSE_CLICKED, (this::clickedOnPosition));
     }
 
 
-    public void setMazeData(char[][] mazeData) {
+    public void init(char[][] mazeData, Function<RowCol, Void> listener) {
         this.mazeData = mazeData;
         initImages();
+        redrawMaze();
+        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            int col = (int) (event.getX() / colWidth);
+            int row = (int) (event.getY() / rowHeight);
+            listener.apply(new RowCol(row, col));
+        });
+    }
+
+    public void setMazeData(char[][] mazeData) {
+        this.mazeData = mazeData;
         redrawMaze();
     }
 
@@ -135,14 +145,6 @@ public class PipesGrid extends Canvas {
         return goalImage;
     }
 
-    private void clickedOnPosition(MouseEvent event) {
-        int col = (int) (event.getX() / colWidth);
-        int row = (int) (event.getY() / rowHeight);
-//        System.out.println("clickedOnPosition: " + row + ", " + col);
-        mazeData[row][col] = PipesPuzzle.getNextChar(mazeData[row][col]);
-        redraw();
-    }
-
     private void redrawMaze() {
         double width = getWidth();
         double height = getHeight();
@@ -151,7 +153,7 @@ public class PipesGrid extends Canvas {
         redraw();
     }
 
-     void initImages() {
+    void initImages() {
         Image regularPipe = null;
         Image anglePipe = null;
         try {
@@ -187,11 +189,11 @@ public class PipesGrid extends Canvas {
         rotateImage = 0;
         iv = new ImageView(regularPipe);
         iv.setRotate(rotateImage);
-        imagePipeVertical = iv.snapshot(params, null);
+        imagePipeHorizontal = iv.snapshot(params, null);
         //'-'
         rotateImage = 90;
         iv.setRotate(rotateImage);
-        imagePipeHorizontal = iv.snapshot(params, null);
+        imagePipeVertical = iv.snapshot(params, null);
     }
 
     void redraw() {
@@ -210,16 +212,16 @@ public class PipesGrid extends Canvas {
                             image = imagePipeHorizontal;
                             break;
                         case 'F':
-                            image = imagePipe0Rotation;
-                            break;
-                        case '7':
                             image = imagePipe90Rotation;
                             break;
-                        case 'J':
+                        case '7':
                             image = imagePipe180Rotation;
                             break;
-                        case 'L':
+                        case 'J':
                             image = imagePipe270Rotation;
+                            break;
+                        case 'L':
+                            image = imagePipe0Rotation;
                             break;
                         case ' ':
                             break;

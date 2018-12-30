@@ -44,7 +44,7 @@ public class NakedObjectDisplayer {
         showDialog();
     }
 
-    public void displayComboBox(NakedDropDownObject obj, Function<Boolean, Void> listener) {
+    public void display(NakedDropDownObject obj, Function<Boolean, Void> listener) {
         createDialog(10);
         Text caption = new Text("Choose:");
         this.dialogVbox.getChildren().add(caption);
@@ -71,13 +71,28 @@ public class NakedObjectDisplayer {
         showDialog();
     }
 
+    public void display(DialogObject obj) {
+        createDialog(4 * 10);
+
+        Text title = new Text(obj.getTitle());
+        title.setStyle("-fx-font: 18 arial;");
+
+        Text message = new Text(obj.getMessage());
+        message.setStyle("-fx-font: 14 arial;");
+
+        Button button = new Button();
+        button.setText(obj.getButtonText());
+        button.setOnAction(value -> dialog.close());
+        this.dialogVbox.getChildren().addAll(title, message, button);
+
+        showDialog();
+    }
 
     private void createDialog(int spacing) {
         dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         this.dialogVbox = new VBox(spacing);
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
-
     }
 
     private void showDialog() {

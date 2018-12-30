@@ -1,35 +1,41 @@
 package pipes_client_app.view;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
-import pipes_client_app.dialogs.NakedObjectDisplayer;
-import pipes_client_app.dialogs.ServerConfigObject;
-import pipes_client_app.dialogs.ThemeConfigObject;
-import pipes_client_app.dialogs.ThemeType;
+import models.PipesGameModel;
+import pipes_client_app.dialogs.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
     private MediaPlayer mediaPlayer;
-
-    char[][] mazeData = {
-            {'s', 'L', 'F', '-', 'J', '7', '7', '7', '7'},
-            {'7', '7', '7', '7', '7', '7', '7', '7', '7'},
-            {'7', '7', '7', '7', '7', '7', '7', '7', '7'},
-            {'7', '7', '7', '7', '|', '7', '7', '7', '7'},
-            {'7', '7', '7', '7', 'L', '7', '7', '7', '7'},
-            {'7', '7', '7', '7', '7', '7', '7', '7', '7'},
-            {'7', '7', '7', '7', '|', '7', '7', '7', '7'},
-            {'7', '7', '-', '-', '-', '-', '-', '-', 'g'},
-    };
+    private PipesGameModel pipesGameModel;
 
     @FXML
     private PipesGrid pipesGrid;
+    @FXML
+    private Label stepsLabel;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private Label serverLabel;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private Button solveButton;
+
 
     private NakedObjectDisplayer nakedObjectDisplayer = new NakedObjectDisplayer();
     private ServerConfigObject serverConfigObject = new ServerConfigObject();
@@ -37,13 +43,61 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        changeTheme();
-        pipesGrid.setMazeData(mazeData);
+        pipesGameModel = new PipesGameModel();
 
+        changeTheme();
+
+        pipesGrid.init(pipesGameModel.getMazeData(), rowCol -> {
+            if (pipesGameModel.isGameStarted()) {
+                pipesGameModel.movePipe(rowCol.getRow(), rowCol.getCol());
+                pipesGrid.redraw();
+            } else {
+                nakedObjectDisplayer.display(new DialogObject("Error!", "Please click on Start to begin playing", "Ok"));
+            }
+            return null;
+        });
+
+        pipesGameModel.gameBoard.addListener((observable, oldValue, newValue) -> pipesGrid.setMazeData(pipesGameModel.gameBoard.toArray(new char[pipesGameModel.gameBoard.size()][])));
+        pipesGameModel.stepsNum.addListener((observable, oldValue, newValue) -> this.stepsLabel.setText("Steps taken: " + Integer.toString(pipesGameModel.stepsNum.get())));
+        pipesGameModel.secondsPassed.addListener((observable, oldValue, newValue) -> this.timeLabel.setText("Seconds passed: " + Integer.toString(pipesGameModel.secondsPassed.get())));
     }
 
     public void start() {
-        System.out.println("start");
+        pipesGameModel.start();
+        toggleButtons(true);
+    }
+
+    public void stop() {
+        pipesGameModel.stop();
+        toggleButtons(false);
+    }
+
+    public void solve() {
+        stop();
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    System.out.println("Solve clicked " + serverConfigObject.getIP() + " " + serverConfigObject.getPort());
+                    Platform.runLater(() -> serverLabel.setText("Server Status: Connecting to " + serverConfigObject.getIP() + ":" + serverConfigObject.getPort()));
+                    pipesGameModel.connect(serverConfigObject.getIP(), serverConfigObject.getPort());
+                    pipesGameModel.solve();
+                    pipesGameModel.disconnect();
+                    Platform.runLater(() -> serverLabel.setText("Server Status: Disconnected"));
+                } catch (IOException e) {
+                    Platform.runLater(() -> serverLabel.setText("Server Status: Couldn't connect to the server"));
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
+    }
+
+    private void toggleButtons(boolean startDisabled) {
+        startButton.setDisable(startDisabled);
+        stopButton.setDisable(!startDisabled);
+        solveButton.setDisable(!startDisabled);
     }
 
     public void openFile() {
@@ -63,7 +117,7 @@ public class MainWindowController implements Initializable {
     }
 
     public void themeConfig() {
-        nakedObjectDisplayer.displayComboBox(this.themeConfigObject, isChanged -> {
+        nakedObjectDisplayer.display(this.themeConfigObject, isChanged -> {
             System.out.println("Is theme changed: " + isChanged);
             if (isChanged) {
                 changeTheme();
@@ -84,13 +138,14 @@ public class MainWindowController implements Initializable {
         playMusic(themeType.getMusic());
     }
 
-    private void playMusic(String musicFile){
-        if(mediaPlayer != null){
+    private void playMusic(String musicFile) {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
         Media hit = new Media(new File(musicFile).toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.play();
     }
+
 
 }

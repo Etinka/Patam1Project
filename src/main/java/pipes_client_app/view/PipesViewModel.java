@@ -13,10 +13,10 @@ public class PipesViewModel {
         this.pipesModel = pipesModel;
 
         this.isGoal = new SimpleBooleanProperty();
-        this.isGoal.bind(this.pipesModel.isGoal);
+//        this.isGoal.bind(this.pipesModel.isGoal);
 
         this.numberOfSteps = new SimpleIntegerProperty();
-        this.numberOfSteps.bind(this.pipesModel.numberOfSteps);
+        this.numberOfSteps.bind(this.pipesModel.stepsNum);
 
         this.gameBoard = new SimpleListProperty<>();
         this.gameBoard.bind(this.pipesModel.gameBoard);
