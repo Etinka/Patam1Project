@@ -42,7 +42,7 @@ public class PipesGrid extends Canvas {
     }
 
 
-    public void init(char[][] mazeData, Function<RowCol, Void> listener) {
+    void init(char[][] mazeData, Function<RowCol, Void> listener) {
         this.mazeData = mazeData;
         initImages();
         redrawMaze();
@@ -146,6 +146,9 @@ public class PipesGrid extends Canvas {
     }
 
     private void redrawMaze() {
+        if (mazeData == null) {
+            return;
+        }
         double width = getWidth();
         double height = getHeight();
         colWidth = width / mazeData[0].length;

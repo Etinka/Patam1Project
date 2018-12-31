@@ -60,6 +60,10 @@ public class MainWindowController implements Initializable {
         pipesGameModel.gameBoard.addListener((observable, oldValue, newValue) -> pipesGrid.setMazeData(pipesGameModel.gameBoard.toArray(new char[pipesGameModel.gameBoard.size()][])));
         pipesGameModel.stepsNum.addListener((observable, oldValue, newValue) -> this.stepsLabel.setText("Steps taken: " + Integer.toString(pipesGameModel.stepsNum.get())));
         pipesGameModel.secondsPassed.addListener((observable, oldValue, newValue) -> this.timeLabel.setText("Seconds passed: " + Integer.toString(pipesGameModel.secondsPassed.get())));
+        pipesGameModel.isGoal.addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                Platform.runLater(() -> nakedObjectDisplayer.display(new DialogObject("YAY!!!", "You solved the game!", "Woohoo!")));
+        });
     }
 
     public void start() {
@@ -81,10 +85,12 @@ public class MainWindowController implements Initializable {
                     System.out.println("Solve clicked " + serverConfigObject.getIP() + " " + serverConfigObject.getPort());
                     Platform.runLater(() -> serverLabel.setText("Server Status: Connecting to " + serverConfigObject.getIP() + ":" + serverConfigObject.getPort()));
                     pipesGameModel.connect(serverConfigObject.getIP(), serverConfigObject.getPort());
+                    Platform.runLater(() -> serverLabel.setText("Server Status: Waiting for solution"));
                     pipesGameModel.solve();
                     pipesGameModel.disconnect();
                     Platform.runLater(() -> serverLabel.setText("Server Status: Disconnected"));
                 } catch (IOException e) {
+                    Platform.runLater(() -> nakedObjectDisplayer.display(new DialogObject("Oops...", "Couldn't connect to the server, please try again later", "Ok")));
                     Platform.runLater(() -> serverLabel.setText("Server Status: Couldn't connect to the server"));
                     e.printStackTrace();
                 }
@@ -103,13 +109,35 @@ public class MainWindowController implements Initializable {
     public void openFile() {
         System.out.println("openFile");
         FileChooser fc = new FileChooser();
-        fc.setTitle("Open maze file");
+        fc.setTitle("Load maze file");
         fc.setInitialDirectory(new File("./resources"));
-        fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Xml files", "xml"));
+        fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File chosen = fc.showOpenDialog(null);
         if (chosen != null) {
             System.out.println("Chose: " + chosen.getName());
+            try {
+                pipesGameModel.loadGame(chosen);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public void saveFile() {
+        stop();
+        System.out.println("saveFile");
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Choose the folder to save the current game");
+        FileChooser.ExtensionFilter txtExtensionFilter = new FileChooser.ExtensionFilter("Text Files", "*.txt");
+        fc.getExtensionFilters().add(txtExtensionFilter);
+        fc.setSelectedExtensionFilter(txtExtensionFilter);
+
+        File selectedFile = fc.showSaveDialog(null);
+
+        if (selectedFile == null) {
+            return;
+        }
+        pipesGameModel.saveCurrentGame(selectedFile);
     }
 
     public void serverConfig() {

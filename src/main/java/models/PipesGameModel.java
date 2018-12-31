@@ -2,10 +2,7 @@ package models;
 
 import algorithms.PipesPuzzle;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 
 import java.io.*;
@@ -17,29 +14,29 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class PipesGameModel {
+    private static final String TIME_PREFIX = "seconds:";
+    private static final String STEPS_PREFIX = "steps:";
+
     private ScheduledExecutorService executor;
 
     private Socket serverSocket;
     public IntegerProperty stepsNum = new SimpleIntegerProperty();
     public IntegerProperty secondsPassed = new SimpleIntegerProperty();
     public ListProperty<char[]> gameBoard = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
+    public BooleanProperty isGoal = new SimpleBooleanProperty();
 
     private char[][] mazeData = {
             {'s', 'L', 'F'},
-            {'-', '-', 'F'},
+            {'F', '-', 'F'},
             {'|', '7', 'g'}
-//            {'s', 'L', 'F', '-', 'J', '7', '7', '7', '7'},
-//            {'7', '7', '7', '7', '7', '7', '7', '7', '7'},
-//            {'7', '7', '7', '7', '7', '7', '7', '7', '7'},
-//            {'7', '7', '7', '7', '|', '7', '7', '7', '7'},
-//            {'7', '7', '7', '7', 'L', '7', '7', '7', '7'},
-//            {'7', '7', '7', '7', '7', '7', '7', '7', '7'},
-//            {'7', '7', '7', '7', '|', '7', '7', '7', '7'},
-//            {'7', '7', '-', '-', '-', '-', '-', '-', 'g'},
     };
 
     public char[][] getMazeData() {
-        return mazeData;
+        return gameBoard.toArray(new char[gameBoard.size()][]);
+    }
+
+    public PipesGameModel() {
+        gameBoard.addAll(mazeData);
     }
 
     public boolean isGameStarted() {
@@ -47,9 +44,6 @@ public class PipesGameModel {
     }
 
     public void start() {
-        if (gameBoard.size() == 0) {
-            gameBoard.addAll(mazeData);
-        }
         setTimer();
     }
 
@@ -88,14 +82,6 @@ public class PipesGameModel {
         this.gameBoard.set(col, this.gameBoard.get(col));
     }
 
-    public void saveGame(File file) throws IOException {
-        PrintWriter out = new PrintWriter(file);
-        for (char[] aGameBoard : this.gameBoard) {
-            out.println(new String(aGameBoard));
-        }
-        out.close();
-    }
-
     public void solve() throws IOException, InterruptedException {
         if (this.serverSocket != null) {
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(this.serverSocket.getInputStream()));
@@ -103,6 +89,7 @@ public class PipesGameModel {
 
             for (char[] line : this.gameBoard.get()) {
                 outToServer.println(line);
+                System.out.println(line);
                 outToServer.flush();
             }
 
@@ -110,7 +97,9 @@ public class PipesGameModel {
             outToServer.flush();
             System.out.println("flushed to server");
             String line;
+            Boolean hasSteps = true;
             while (!(line = inFromServer.readLine()).equals("done")) {
+                System.out.println("**"  + line);
                 String[] steps = line.split(",");
                 int row = Integer.parseInt(steps[0]);
                 int col = Integer.parseInt(steps[1]);
@@ -120,18 +109,45 @@ public class PipesGameModel {
                     Platform.runLater(() -> movePipe(row, col));
                     Thread.sleep(150);
                 }
+                hasSteps = false;
             }
+            isGoal.setValue(hasSteps);
             System.out.println("done");
         }
     }
 
-    public void loadGame(String fileName) throws IOException {
+    public void saveCurrentGame(File file) {
+        try {
+            PrintWriter outFile = new PrintWriter(file);
+            for (char[] aGameBoard : this.gameBoard) {
+                outFile.println(new String(aGameBoard));
+            }
+
+            outFile.println(TIME_PREFIX + secondsPassed.get());
+            outFile.println(STEPS_PREFIX + stepsNum.get());
+
+            outFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void loadGame(File file) throws IOException {
         List<char[]> mazeBuilder = new ArrayList<>();
         BufferedReader reader;
-        reader = new BufferedReader(new FileReader(fileName));
+        reader = new BufferedReader(new FileReader(file));
         String line;
         while ((line = reader.readLine()) != null) {
-            mazeBuilder.add(line.toCharArray());
+            if (line.startsWith(TIME_PREFIX)) {
+                int seconds = Integer.parseInt(line.split(":")[1]);
+                secondsPassed.set(seconds);
+            } else if (line.startsWith(STEPS_PREFIX)) {
+                int steps = Integer.parseInt(line.split(":")[1]);
+                stepsNum.set(steps);
+            } else {
+                mazeBuilder.add(line.toCharArray());
+            }
         }
         this.gameBoard.setAll(mazeBuilder.toArray(new char[mazeBuilder.size()][]));
         reader.close();
