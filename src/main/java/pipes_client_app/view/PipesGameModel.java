@@ -1,4 +1,4 @@
-package models;
+package pipes_client_app.view;
 
 import algorithms.PipesPuzzle;
 import javafx.application.Platform;

@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
-import models.PipesGameModel;
 import pipes_client_app.dialogs.*;
 
 import java.io.File;

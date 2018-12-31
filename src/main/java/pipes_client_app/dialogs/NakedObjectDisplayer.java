@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -51,6 +52,7 @@ public class NakedObjectDisplayer {
 
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.setItems(obj.getDropDownNames());
+        comboBox.getSelectionModel().selectFirst();
 
         this.dialogVbox.getChildren().add(comboBox);
         AtomicBoolean isChanged = new AtomicBoolean(false);
@@ -93,6 +95,11 @@ public class NakedObjectDisplayer {
         dialog.initModality(Modality.APPLICATION_MODAL);
         this.dialogVbox = new VBox(spacing);
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
+        dialogVbox.setBackground(Background.EMPTY);
+        String style = "-fx-background-color: rgba(255, 255, 255, 1);";
+        dialogVbox.setStyle(style);
+        dialog.setMinHeight(200);
+        dialog.setMinWidth(200);
     }
 
     private void showDialog() {
